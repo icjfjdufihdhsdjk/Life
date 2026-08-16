@@ -3,472 +3,766 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>LIFE</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html,body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
+html,
+body {
+    width: 100%;
+    height: 100%;
 }
 
-body{
-  background:#000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-family:Arial,sans-serif;
+body {
+    overflow: hidden;
+    background: #020303;
 }
 
-.scene{
-  position:relative;
-  width:100vw;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  perspective:1600px;
-  background:#000;
+
+/* ============================
+   SCÈNE
+============================ */
+
+.scene {
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    perspective: 1600px;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 80%,
+            #10110f 0%,
+            #060706 28%,
+            #020303 60%,
+            #000 100%
+        );
 }
 
-.glow{
-  position:absolute;
-  width:180px;
-  height:65vh;
-  opacity:.12;
-  filter:blur(45px);
-  background:linear-gradient(
-    to bottom,
-    rgba(255,240,180,.2),
-    rgba(255,220,130,.9),
-    rgba(255,220,130,.15)
-  );
-  transition:opacity 3s ease,width 4s ease;
+
+/* brume très légère au sol */
+
+.scene::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: -80px;
+    left: 50%;
+
+    width: 900px;
+    height: 250px;
+
+    transform: translateX(-50%);
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(150, 140, 100, .12),
+            transparent 65%
+        );
+
+    filter: blur(30px);
+
+    pointer-events: none;
 }
 
-.gate{
-  position:relative;
-  width:min(680px,78vw);
-  height:min(850px,88vh);
-  transform-style:preserve-3d;
-  cursor:pointer;
+
+
+/* ============================
+   TEMPLE
+============================ */
+
+.temple {
+
+    position: relative;
+
+    width: min(920px, 90vw);
+    height: min(900px, 95vh);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+
+    filter:
+        drop-shadow(0 0 20px rgba(0,0,0,.9))
+        drop-shadow(0 25px 35px rgba(0,0,0,.9));
+
 }
 
-.gate-svg{
-  width:100%;
-  height:100%;
-  overflow:visible;
-  filter:drop-shadow(0 20px 40px rgba(0,0,0,.9));
+
+/* ============================
+   SOMMET
+============================ */
+
+.crown {
+
+    position: absolute;
+
+    top: 2%;
+
+    width: 66%;
+    height: 180px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #171712,
+            #373329,
+            #25231d,
+            #3d382d,
+            #151511
+        );
+
+    clip-path: polygon(
+        7% 100%,
+        12% 62%,
+        22% 58%,
+        29% 31%,
+        40% 27%,
+        50% 5%,
+        60% 27%,
+        71% 31%,
+        78% 58%,
+        88% 62%,
+        93% 100%
+    );
+
+    border-bottom: 8px solid #484238;
 }
 
-.frame{
-  fill:#11110f;
-  stroke:#665b3d;
-  stroke-width:5;
+
+.crown::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 38%;
+
+    width: 90px;
+    height: 90px;
+
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+
+    border: 5px solid #5e5748;
+
+    opacity: .65;
+
 }
 
-.frame-inner{
-  fill:none;
-  stroke:#8e7b4f;
-  stroke-width:2;
-  opacity:.75;
+
+
+/* ============================
+   ÉTAGE SUPÉRIEUR
+============================ */
+
+.upper {
+
+    position: absolute;
+
+    top: 17%;
+
+    width: 78%;
+    height: 190px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #25241e 0 55px,
+            #302e26 55px 110px
+        );
+
+    border:
+        7px solid #444137;
+
+    box-shadow:
+        inset 0 -25px 30px rgba(0,0,0,.65);
+
 }
 
-.door{
-  transform-box:fill-box;
-  transition:transform 4s cubic-bezier(.3,.02,.1,1);
+
+.upper::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 30px;
+    left: 6%;
+
+    width: 88%;
+    height: 60px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #080908 0 25px,
+            #353229 25px 42px,
+            #080908 42px 67px
+        );
+
+    border-top: 5px solid #4c483d;
+    border-bottom: 5px solid #4c483d;
+
 }
 
-.left{
-  transform-origin:left center;
+
+
+/* ============================
+   BANDEAU CENTRAL
+============================ */
+
+.band {
+
+    position: absolute;
+
+    top: 34%;
+
+    width: 88%;
+    height: 70px;
+
+    background:
+        linear-gradient(
+            #504a3d,
+            #24231e 35%,
+            #171713 65%,
+            #514b3e
+        );
+
+    border-top: 6px solid #666054;
+    border-bottom: 7px solid #343129;
+
 }
 
-.right{
-  transform-origin:right center;
+.band::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 18px 5%;
+
+    border-top: 2px solid #71684d;
+    border-bottom: 2px solid #71684d;
+
 }
 
-.door-base{
-  fill:url(#doorGradient);
-  stroke:#756542;
-  stroke-width:3;
+
+
+/* ============================
+   CORPS PRINCIPAL
+============================ */
+
+.main-building {
+
+    position: absolute;
+
+    bottom: 0;
+
+    width: 82%;
+    height: 61%;
+
+    background:
+
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 37px,
+            rgba(255,255,255,.025) 38px 40px
+        ),
+
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 52px,
+            rgba(0,0,0,.17) 52px 56px
+        ),
+
+        linear-gradient(
+            90deg,
+            #1b1c19,
+            #38362e 18%,
+            #23231f 50%,
+            #39372f 82%,
+            #191a17
+        );
+
+    border-left: 9px solid #48463e;
+    border-right: 9px solid #48463e;
+
 }
 
-.panel{
-  fill:none;
-  stroke:#a08b58;
-  stroke-width:2;
-  opacity:.7;
+
+
+/* ============================
+   COLONNES
+============================ */
+
+.column {
+
+    position: absolute;
+
+    bottom: 4%;
+
+    width: 86px;
+    height: 52%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #171815,
+            #56534a,
+            #2a2a25,
+            #5a564b,
+            #171815
+        );
+
+    border: 5px solid #555249;
+
 }
 
-.ornament{
-  fill:none;
-  stroke:#b6a06d;
-  stroke-width:3;
-  stroke-linecap:round;
-  opacity:.75;
+
+.column::before,
+.column::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: -15px;
+
+    width: calc(100% + 30px);
+
+    height: 25px;
+
+    background: #4b4941;
+
+    border-top: 4px solid #656157;
+    border-bottom: 4px solid #2a2925;
+
 }
 
-.ornament-thin{
-  fill:none;
-  stroke:#8f7d55;
-  stroke-width:1.7;
-  opacity:.55;
+.column::before {
+    top: -12px;
 }
 
-.center-line{
-  stroke:#c8ae72;
-  stroke-width:3;
-  opacity:.5;
+.column::after {
+    bottom: -12px;
 }
 
-.rune{
-  fill:none;
-  stroke:#d2b979;
-  stroke-width:2.5;
-  opacity:.7;
+
+.column.left {
+    left: 16%;
 }
 
-.crown{
-  fill:none;
-  stroke:#b89d63;
-  stroke-width:4;
-  opacity:.75;
+.column.right {
+    right: 16%;
 }
 
-.gate.open .left{
-  transform:rotateY(-108deg);
+
+
+/* ============================
+   STRUCTURE AUTOUR DE LA PORTE
+============================ */
+
+.portal-frame {
+
+    position: absolute;
+
+    bottom: 3%;
+
+    width: 390px;
+    height: 500px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #424139,
+            #777267,
+            #34342f,
+            #787267,
+            #403f38
+        );
+
+    padding: 35px;
+
+    box-shadow:
+        0 0 30px rgba(0,0,0,.9);
+
 }
 
-.gate.open .right{
-  transform:rotateY(108deg);
+
+.portal-frame::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: -25px;
+    top: -25px;
+
+    width: calc(100% + 50px);
+    height: 35px;
+
+    background:
+        linear-gradient(
+            #6c675c,
+            #35342f
+        );
+
+    border-top: 4px solid #827d71;
+
 }
 
-.scene.open .glow{
-  opacity:1;
-  width:420px;
+
+
+/* ============================
+   LUMIÈRE DERRIÈRE
+============================ */
+
+.portal-light {
+
+    position: absolute;
+
+    bottom: 4%;
+
+    width: 250px;
+    height: 410px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #5e3a0c,
+            #d59d32,
+            #fff0a5,
+            #d59d32,
+            #5e3a0c
+        );
+
+    opacity: .3;
+
+    filter: blur(25px);
+
+    transition:
+        opacity 4s ease,
+        width 4s ease;
+
 }
 
-.gate:not(.open):hover{
-  transform:scale(1.01);
+
+
+/* ============================
+   PORTES
+============================ */
+
+.doors {
+
+    position: absolute;
+
+    inset: 35px;
+
+    display: flex;
+
+    perspective: 1200px;
+
+    overflow: visible;
+
 }
+
+
+.door {
+
+    position: relative;
+
+    width: 50%;
+    height: 100%;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 29px,
+            rgba(255,235,150,.09) 30px 33px
+        ),
+
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 45px,
+            rgba(80,45,5,.3) 46px 49px
+        ),
+
+        linear-gradient(
+            90deg,
+            #6c400b,
+            #b97d19,
+            #d7a936,
+            #82500d
+        );
+
+    border: 4px solid #8d6825;
+
+    box-shadow:
+        inset 0 0 35px rgba(55,30,0,.9);
+
+    transition:
+        transform 4.5s cubic-bezier(.2,.7,.05,1);
+
+}
+
+
+.door-left {
+
+    transform-origin: left center;
+
+}
+
+
+.door-right {
+
+    transform-origin: right center;
+
+}
+
+
+
+/* ornements */
+
+.door::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 22px;
+
+    border: 3px solid rgba(255,220,120,.38);
+
+}
+
+
+.door::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 13%;
+
+    width: 45%;
+    height: 74%;
+
+    transform: translateX(-50%);
+
+    border-left: 3px solid rgba(255,225,130,.28);
+    border-right: 3px solid rgba(255,225,130,.28);
+
+}
+
+
+
+/* ============================
+   JOINT CENTRAL
+============================ */
+
+.seal {
+
+    position: absolute;
+
+    left: 50%;
+    top: 35px;
+
+    width: 8px;
+    height: calc(100% - 70px);
+
+    transform: translateX(-50%);
+
+    background:
+        linear-gradient(
+            #70501e,
+            #efc253,
+            #70501e
+        );
+
+    z-index: 5;
+
+    box-shadow:
+        0 0 10px rgba(255,190,60,.25);
+
+    transition: opacity 1s ease;
+
+}
+
+
+
+/* ============================
+   SOCLE
+============================ */
+
+.base {
+
+    position: absolute;
+
+    bottom: -45px;
+
+    width: 100%;
+    height: 90px;
+
+    background:
+        linear-gradient(
+            #3a3933,
+            #151614
+        );
+
+    clip-path: polygon(
+        5% 0,
+        95% 0,
+        100% 100%,
+        0 100%
+    );
+
+    border-top: 5px solid #555249;
+
+}
+
+
+
+/* ============================
+   OUVERTURE
+============================ */
+
+.temple.open .door-left {
+    transform: rotateY(-112deg);
+}
+
+.temple.open .door-right {
+    transform: rotateY(112deg);
+}
+
+.temple.open .seal {
+    opacity: 0;
+}
+
+.temple.open .portal-light {
+    opacity: .95;
+    width: 410px;
+}
+
+
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+@media (max-width: 650px) {
+
+    .portal-frame {
+        width: 270px;
+        height: 390px;
+    }
+
+    .column {
+        width: 60px;
+    }
+
+}
+
 </style>
 </head>
 
+
 <body>
 
-<div class="scene" id="scene">
 
-  <div class="glow"></div>
+<div class="scene">
 
-  <div class="gate" id="gate">
 
-    <svg
-      class="gate-svg"
-      viewBox="0 0 700 900"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <div class="temple" id="temple">
 
-      <defs>
 
-        <linearGradient id="doorGradient" x1="0" x2="1">
-          <stop offset="0%" stop-color="#171611"/>
-          <stop offset="45%" stop-color="#29261b"/>
-          <stop offset="70%" stop-color="#1a1812"/>
-          <stop offset="100%" stop-color="#0d0d0b"/>
-        </linearGradient>
+        <div class="crown"></div>
 
-        <radialGradient id="archGlow">
-          <stop offset="0%" stop-color="#9c8754" stop-opacity=".35"/>
-          <stop offset="100%" stop-color="#11110f" stop-opacity="0"/>
-        </radialGradient>
+        <div class="upper"></div>
 
-      </defs>
+        <div class="band"></div>
 
-      <!-- halo arrière -->
-      <ellipse
-        cx="350"
-        cy="420"
-        rx="300"
-        ry="390"
-        fill="url(#archGlow)"
-      />
+        <div class="main-building"></div>
 
-      <!-- arche monumentale -->
-      <path
-        class="frame"
-        d="
-        M80 790
-        L80 360
-        C80 150 190 55 350 55
-        C510 55 620 150 620 360
-        L620 790
-        Z
 
-        M125 790
-        L125 370
-        C125 195 215 105 350 105
-        C485 105 575 195 575 370
-        L575 790
-        Z
-        "
-        fill-rule="evenodd"
-      />
+        <div class="column left"></div>
 
-      <!-- lignes de profondeur -->
-      <path
-        class="frame-inner"
-        d="
-        M105 790
-        L105 365
-        C105 175 205 80 350 80
-        C495 80 595 175 595 365
-        L595 790
-        "
-      />
+        <div class="column right"></div>
 
-      <!-- sommet -->
-      <path
-        class="crown"
-        d="
-        M285 120
-        Q350 55 415 120
-        Q385 92 350 150
-        Q315 92 285 120
-        "
-      />
 
-      <circle
-        class="rune"
-        cx="350"
-        cy="150"
-        r="23"
-      />
+        <div class="portal-light"></div>
 
-      <path
-        class="rune"
-        d="
-        M350 134
-        L360 150
-        L350 166
-        L340 150
-        Z
-        "
-      />
 
-      <!-- PORTE GAUCHE -->
-      <g class="door left">
+        <div class="portal-frame">
 
-        <path
-          class="door-base"
-          d="
-          M128 785
-          L128 370
-          C128 208 205 125 345 110
-          L345 785
-          Z
-          "
-        />
 
-        <path
-          class="panel"
-          d="
-          M155 740
-          L155 400
-          C155 255 220 180 320 160
-          L320 740
-          Z
-          "
-        />
+            <div class="doors">
 
-        <path
-          class="ornament"
-          d="
-          M235 660
-          C175 590 185 500 250 445
-          C300 405 300 335 255 285
-          "
-        />
 
-        <path
-          class="ornament"
-          d="
-          M235 660
-          C290 600 285 520 230 470
-          "
-        />
+                <div class="door door-left"></div>
 
-        <path
-          class="ornament-thin"
-          d="
-          M180 585
-          C230 560 250 520 260 480
-          "
-        />
+                <div class="door door-right"></div>
 
-        <path
-          class="ornament-thin"
-          d="
-          M175 515
-          C215 500 235 460 242 420
-          "
-        />
 
-        <circle
-          class="rune"
-          cx="260"
-          cy="355"
-          r="31"
-        />
+            </div>
 
-        <path
-          class="rune"
-          d="
-          M245 355
-          L260 335
-          L275 355
-          L260 375
-          Z
-          "
-        />
 
-      </g>
+            <div class="seal"></div>
 
-      <!-- PORTE DROITE -->
-      <g class="door right">
 
-        <path
-          class="door-base"
-          d="
-          M355 110
-          C495 125 572 208 572 370
-          L572 785
-          L355 785
-          Z
-          "
-        />
+        </div>
 
-        <path
-          class="panel"
-          d="
-          M380 160
-          C480 180 545 255 545 400
-          L545 740
-          L380 740
-          Z
-          "
-        />
 
-        <path
-          class="ornament"
-          d="
-          M465 660
-          C525 590 515 500 450 445
-          C400 405 400 335 445 285
-          "
-        />
+        <div class="base"></div>
 
-        <path
-          class="ornament"
-          d="
-          M465 660
-          C410 600 415 520 470 470
-          "
-        />
 
-        <path
-          class="ornament-thin"
-          d="
-          M520 585
-          C470 560 450 520 440 480
-          "
-        />
+    </div>
 
-        <path
-          class="ornament-thin"
-          d="
-          M525 515
-          C485 500 465 460 458 420
-          "
-        />
-
-        <circle
-          class="rune"
-          cx="440"
-          cy="355"
-          r="31"
-        />
-
-        <path
-          class="rune"
-          d="
-          M425 355
-          L440 335
-          L455 355
-          L440 375
-          Z
-          "
-        />
-
-      </g>
-
-      <!-- joint central -->
-      <line
-        class="center-line"
-        x1="350"
-        y1="110"
-        x2="350"
-        y2="785"
-      />
-
-      <!-- sol -->
-      <path
-        d="
-        M60 785
-        L640 785
-        L700 900
-        L0 900
-        Z
-        "
-        fill="#080807"
-      />
-
-      <path
-        d="
-        M90 805
-        L610 805
-        "
-        stroke="#5e5337"
-        stroke-width="2"
-        opacity=".45"
-      />
-
-    </svg>
-
-  </div>
 
 </div>
 
+
+
 <script>
-const gate = document.getElementById("gate");
-const scene = document.getElementById("scene");
+
+const temple = document.getElementById("temple");
 
 let opened = false;
 
-gate.addEventListener("click", () => {
-  if (opened) return;
 
-  opened = true;
+temple.addEventListener("click", () => {
 
-  gate.classList.add("open");
-  scene.classList.add("open");
+    if (opened) return;
+
+    opened = true;
+
+    temple.classList.add("open");
+
 });
+
 </script>
+
 
 </body>
 </html>
