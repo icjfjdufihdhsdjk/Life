@@ -3,85 +3,206 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>LIFE</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background: #000;
+      overflow: hidden;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    svg {
+      width: min(850px, 85vw);
+      overflow: visible;
+    }
+
+    .life-text {
+      fill: #e9e9e4;
+
+      font-family: Impact, "Arial Black", sans-serif;
+      font-weight: 900;
+      font-size: 210px;
+
+      letter-spacing: 5px;
+    }
+
+    .sentence {
+      margin-top: 8px;
+
+      color: #d6d6d6;
+
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <main>
+<div class="container">
 
-    <svg
-      class="life-logo"
-      viewBox="0 0 700 220"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+  <svg viewBox="0 0 900 260">
 
-      <defs>
+    <defs>
 
-        <filter id="organic">
-
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.012"
-            numOctaves="3"
-            seed="4"
-            result="noise"
-          >
-            <animate
-              attributeName="baseFrequency"
-              values="
-                0.012;
-                0.018;
-                0.011;
-                0.016;
-                0.012
-              "
-              dur="4s"
-              repeatCount="indefinite"
-            />
-          </feTurbulence>
-
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="noise"
-            scale="22"
-            xChannelSelector="R"
-            yChannelSelector="G"
-          >
-            <animate
-              attributeName="scale"
-              values="
-                18;
-                28;
-                19;
-                25;
-                18
-              "
-              dur="4s"
-              repeatCount="indefinite"
-            />
-          </feDisplacementMap>
-
-        </filter>
-
-      </defs>
-
-      <text
-        class="life"
-        x="50%"
-        y="72%"
-        text-anchor="middle"
-        filter="url(#organic)"
+      <filter
+        id="organic"
+        x="-40%"
+        y="-40%"
+        width="180%"
+        height="180%"
       >
-        LIFE
-      </text>
 
-    </svg>
+        <!-- texture vivante -->
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.015 0.035"
+          numOctaves="2"
+          seed="8"
+          result="noise"
+        >
 
-    <p>Life can begin anywhere.</p>
+          <animate
+            attributeName="baseFrequency"
+            dur="5s"
+            values="
+              0.015 0.035;
+              0.022 0.045;
+              0.012 0.030;
+              0.020 0.040;
+              0.015 0.035
+            "
+            repeatCount="indefinite"
+          />
 
-  </main>
+        </feTurbulence>
+
+
+        <!-- déformation des lettres -->
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise"
+          scale="38"
+          xChannelSelector="R"
+          yChannelSelector="G"
+        >
+
+          <animate
+            attributeName="scale"
+            dur="3.5s"
+            values="
+              28;
+              42;
+              32;
+              48;
+              28
+            "
+            repeatCount="indefinite"
+          />
+
+        </feDisplacementMap>
+
+      </filter>
+
+    </defs>
+
+
+    <!--
+      Groupe entier qui bat.
+      Le centre du mot est environ 450 / 140.
+    -->
+
+    <g filter="url(#organic)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="
+          0 0;
+          -18 -7;
+          0 0;
+          -10 -4;
+          0 0;
+          0 0
+        "
+        keyTimes="
+          0;
+          .08;
+          .15;
+          .23;
+          .30;
+          1
+        "
+        dur="1.8s"
+        repeatCount="indefinite"
+      />
+
+      <g>
+
+        <animateTransform
+          attributeName="transform"
+          type="scale"
+          values="
+            1 1;
+            1.08 1.06;
+            1 1;
+            1.045 1.03;
+            1 1;
+            1 1
+          "
+          keyTimes="
+            0;
+            .08;
+            .15;
+            .23;
+            .30;
+            1
+          "
+          dur="1.8s"
+          repeatCount="indefinite"
+        />
+
+        <text
+          class="life-text"
+          x="450"
+          y="195"
+          text-anchor="middle"
+        >
+          LIFE
+        </text>
+
+      </g>
+
+    </g>
+
+  </svg>
+
+  <div class="sentence">
+    Life can begin anywhere.
+  </div>
+
+</div>
 
 </body>
 </html>
