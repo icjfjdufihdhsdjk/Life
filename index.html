@@ -6,850 +6,604 @@
 <title>LIFE</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html,body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-}
-
-body{
-  background:#020303;
-  font-family:Arial,Helvetica,sans-serif;
-}
-
-.scene{
-  position:relative;
-  width:100vw;
-  height:100vh;
-
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-
-  perspective:1800px;
-
-  background:
-    radial-gradient(
-      ellipse at 50% 78%,
-      #11120f 0%,
-      #080907 24%,
-      #030403 52%,
-      #000 100%
-    );
-}
-
-/* légère lueur de sol */
-.scene::after{
-  content:"";
-  position:absolute;
-  bottom:-8%;
-  left:50%;
-  width:70vw;
-  height:25vh;
-  transform:translateX(-50%);
-  background:radial-gradient(
-    ellipse,
-    rgba(150,130,85,.11),
-    transparent 70%
-  );
-  filter:blur(35px);
-  pointer-events:none;
-}
-
-
-/* =========================================================
-   MONUMENT
-========================================================= */
-
-.monument{
-  position:relative;
-  width:min(760px,80vw);
-  height:min(930px,96vh);
-
-  transform-style:preserve-3d;
-
-  filter:
-    drop-shadow(0 0 25px rgba(0,0,0,.9))
-    drop-shadow(0 40px 50px rgba(0,0,0,.95));
-}
-
-
-/* =========================================================
-   MASSE PRINCIPALE
-========================================================= */
-
-.main-mass{
-  position:absolute;
-  left:50%;
-  bottom:0;
-
-  width:72%;
-  height:77%;
-
-  transform:translateX(-50%);
-
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,.025) 0 3px,
-      transparent 3px 32px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(0,0,0,.16) 0 3px,
-      transparent 3px 48px
-    ),
-    linear-gradient(
-      90deg,
-      #171815 0%,
-      #292922 12%,
-      #3a382e 25%,
-      #23241f 50%,
-      #3a382e 75%,
-      #292922 88%,
-      #171815 100%
-    );
-
-  border-left:8px solid #4a4941;
-  border-right:8px solid #4a4941;
-
-  box-shadow:
-    inset 0 0 65px rgba(0,0,0,.6),
-    inset 0 35px 50px rgba(0,0,0,.45);
-}
-
-
-/* =========================================================
-   AILES LATÉRALES
-========================================================= */
-
-.wing{
-  position:absolute;
-  bottom:5%;
-  width:23%;
-  height:58%;
-
-  background:
-    repeating-linear-gradient(
-      0deg,
-      #2c2c26 0 25px,
-      #20211d 25px 31px
-    );
-
-  border:6px solid #44443c;
-
-  box-shadow:
-    inset 0 0 30px rgba(0,0,0,.55);
-}
-
-.wing.left{
-  left:2%;
-  transform:translateZ(-25px);
-}
-
-.wing.right{
-  right:2%;
-  transform:translateZ(-25px);
-}
-
-
-/* corniches ailes */
-
-.wing::before,
-.wing::after{
-  content:"";
-  position:absolute;
-  left:-12px;
-  width:calc(100% + 24px);
-  height:22px;
-
-  background:
-    linear-gradient(
-      #5a594f,
-      #34342e
-    );
-
-  border-top:3px solid #68665b;
-  border-bottom:3px solid #23231f;
-}
-
-.wing::before{
-  top:18%;
-}
-
-.wing::after{
-  top:58%;
-}
-
-
-/* =========================================================
-   NICHES
-========================================================= */
-
-.niches{
-  position:absolute;
-  inset:0;
-
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  grid-template-rows:repeat(4,1fr);
-
-  gap:24px 14px;
-
-  padding:65px 25px 35px;
-}
-
-.niche{
-  background:
-    linear-gradient(
-      90deg,
-      #070807,
-      #151511,
-      #070807
-    );
-
-  border:
-    4px solid #49483f;
-
-  box-shadow:
-    inset 0 0 20px rgba(0,0,0,.95);
-
-  position:relative;
-}
-
-.niche::after{
-  content:"";
-  position:absolute;
-  inset:7px;
-
-  border:1px solid rgba(150,145,120,.15);
-}
-
-
-/* =========================================================
-   BANDE ARCHITECTURALE INFÉRIEURE
-========================================================= */
-
-.lower-band{
-  position:absolute;
-  left:50%;
-  bottom:56%;
-
-  width:88%;
-  height:9%;
-
-  transform:translateX(-50%) translateZ(25px);
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #32322b 0 30px,
-      #47463d 30px 60px
-    );
-
-  border-top:6px solid #676358;
-  border-bottom:8px solid #272722;
-
-  box-shadow:
-    0 12px 20px rgba(0,0,0,.75);
-}
-
-
-/* petites ouvertures */
-
-.lower-band::after{
-  content:"";
-  position:absolute;
-  left:5%;
-  top:31%;
-
-  width:90%;
-  height:26%;
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #080908 0 20px,
-      transparent 20px 38px
-    );
-}
-
-
-/* =========================================================
-   ÉTAGE SUPÉRIEUR
-========================================================= */
-
-.upper{
-  position:absolute;
-  left:50%;
-  top:14%;
-
-  width:80%;
-  height:25%;
-
-  transform:translateX(-50%);
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #272720 0 48px,
-      #333229 48px 96px
-    );
-
-  border:
-    7px solid #45443a;
-
-  box-shadow:
-    inset 0 -35px 30px rgba(0,0,0,.55);
-}
-
-.upper::before{
-  content:"";
-  position:absolute;
-  left:-7%;
-  bottom:-13px;
-
-  width:114%;
-  height:28px;
-
-  background:
-    linear-gradient(
-      #5b574a,
-      #2d2d27
-    );
-
-  border-top:4px solid #6e695a;
-  border-bottom:4px solid #22231f;
-}
-
-.upper-windows{
-  position:absolute;
-  left:5%;
-  top:25%;
-
-  width:90%;
-  height:40%;
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #090a09 0 22px,
-      #39372f 22px 45px
-    );
-
-  border-top:4px solid #47463d;
-  border-bottom:4px solid #47463d;
-}
-
-
-/* =========================================================
-   SOMMET
-========================================================= */
-
-.crown{
-  position:absolute;
-  left:50%;
-  top:-3%;
-
-  width:66%;
-  height:27%;
-
-  transform:translateX(-50%);
-
-  clip-path:polygon(
-    5% 100%,
-    10% 75%,
-    20% 68%,
-    26% 46%,
-    38% 42%,
-    50% 10%,
-    62% 42%,
-    74% 46%,
-    80% 68%,
-    90% 75%,
-    95% 100%
-  );
-
-  background:
-    linear-gradient(
-      90deg,
-      #171713,
-      #3a372d,
-      #201f1a,
-      #474237,
-      #201f1a,
-      #39372d,
-      #171713
-    );
-
-  border-bottom:8px solid #4e4a40;
-
-  filter:brightness(.85);
-}
-
-.crown-core{
-  position:absolute;
-  left:50%;
-  top:5%;
-
-  width:29%;
-  height:18%;
-
-  transform:translateX(-50%);
-
-  background:
-    linear-gradient(
-      90deg,
-      #191914,
-      #39362c,
-      #1b1b17
-    );
-
-  clip-path:polygon(
-    10% 100%,
-    18% 42%,
-    34% 42%,
-    50% 0,
-    66% 42%,
-    82% 42%,
-    90% 100%
-  );
-
-  opacity:.9;
-}
-
-
-/* =========================================================
-   PILIERS MASSIFS
-========================================================= */
-
-.pillar{
-  position:absolute;
-  bottom:3%;
-
-  width:13%;
-  height:57%;
-
-  background:
-    linear-gradient(
-      90deg,
-      #171815,
-      #414038,
-      #625e53,
-      #34342e,
-      #171815
-    );
-
-  border:
-    6px solid #4d4d45;
-
-  transform:translateZ(50px);
-
-  box-shadow:
-    0 15px 20px rgba(0,0,0,.6);
-}
-
-.pillar.left{
-  left:18%;
-}
-
-.pillar.right{
-  right:18%;
-}
-
-.pillar::before,
-.pillar::after{
-  content:"";
-  position:absolute;
-  left:-14px;
-
-  width:calc(100% + 28px);
-  height:32px;
-
-  background:
-    linear-gradient(
-      #666258,
-      #36352f
-    );
-
-  border-top:4px solid #747065;
-  border-bottom:4px solid #242420;
-}
-
-.pillar::before{
-  top:-18px;
-}
-
-.pillar::after{
-  bottom:-18px;
-}
-
-
-/* =========================================================
-   CADRE DE PORTE
-========================================================= */
-
-.portal-frame{
-  position:absolute;
-  left:50%;
-  bottom:3%;
-
-  width:34%;
-  height:48%;
-
-  transform:
-    translateX(-50%)
-    translateZ(80px);
-
-  background:
-    linear-gradient(
-      90deg,
-      #33332d,
-      #69665d 12%,
-      #3d3d36 24%,
-      #77736a 50%,
-      #3d3d36 76%,
-      #69665d 88%,
-      #33332d
-    );
-
-  padding:28px;
-
-  border:
-    7px solid #56554c;
-
-  box-shadow:
-    0 0 32px rgba(0,0,0,.95),
-    inset 0 0 20px rgba(0,0,0,.4);
-}
-
-
-/* gros linteau */
-
-.portal-frame::before{
-  content:"";
-  position:absolute;
-  left:-11%;
-  top:-30px;
-
-  width:122%;
-  height:36px;
-
-  background:
-    linear-gradient(
-      #777268,
-      #44433c
-    );
-
-  border-top:4px solid #858077;
-  border-bottom:5px solid #292925;
-
-}
-
-
-/* =========================================================
-   LUMIÈRE DE PORTE
-========================================================= */
-
-.portal-glow{
-  position:absolute;
-  left:50%;
-  bottom:6%;
-
-  width:18%;
-  height:39%;
-
-  transform:translateX(-50%);
-
-  background:
-    radial-gradient(
-      ellipse,
-      rgba(255,190,65,.72),
-      rgba(160,95,10,.2) 55%,
-      transparent 75%
-    );
-
-  filter:blur(30px);
-
-  opacity:.33;
-}
-
-
-/* =========================================================
-   PORTES DORÉES
-========================================================= */
-
-.doors{
-  position:absolute;
-  inset:28px;
-
-  display:flex;
-
-  perspective:1500px;
-  transform-style:preserve-3d;
-}
-
-.door{
-  position:relative;
-  width:50%;
-  height:100%;
-
-  background:
-
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 43px,
-      rgba(80,50,10,.28) 43px 47px
-    ),
-
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 25px,
-      rgba(255,220,120,.12) 25px 28px
-    ),
-
-    linear-gradient(
-      90deg,
-      #563608 0%,
-      #8f5c10 22%,
-      #c28e27 48%,
-      #8f5c10 72%,
-      #503107 100%
-    );
-
-  border:
-    4px solid #8d6722;
-
-  box-shadow:
-    inset 0 0 30px rgba(48,25,0,.8);
-
-  transition:
-    transform 4.5s cubic-bezier(.17,.67,.08,1);
-}
-
-.door.left{
-  transform-origin:left center;
-}
-
-.door.right{
-  transform-origin:right center;
-}
-
-
-/* panneaux décoratifs */
-
-.door::before{
-  content:"";
-  position:absolute;
-  inset:18px;
-
-  border:
-    2px solid rgba(255,220,130,.35);
-}
-
-.door::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:9%;
-
-  width:40%;
-  height:82%;
-
-  transform:translateX(-50%);
-
-  border-left:
-    2px solid rgba(255,220,130,.28);
-
-  border-right:
-    2px solid rgba(255,220,130,.28);
-}
-
-
-/* joint central */
-
-.seal{
-  position:absolute;
-  left:50%;
-  top:28px;
-
-  width:7px;
-  height:calc(100% - 56px);
-
-  transform:translateX(-50%);
-
-  background:
-    linear-gradient(
-      #704c14,
-      #e1b64b,
-      #704c14
-    );
-
-  z-index:10;
-
-  box-shadow:
-    0 0 11px rgba(255,190,70,.25);
-
-  transition:opacity 1s ease;
-}
-
-
-/* =========================================================
-   SOCLE
-========================================================= */
-
-.base{
-  position:absolute;
-  left:50%;
-  bottom:-2%;
-
-  width:98%;
-  height:8%;
-
-  transform:translateX(-50%);
-
-  background:
-    linear-gradient(
-      #373732,
-      #151614
-    );
-
-  clip-path:polygon(
-    6% 0,
-    94% 0,
-    100% 100%,
-    0 100%
-  );
-
-  border-top:
-    5px solid #4c4c45;
-}
-
-
-/* =========================================================
-   OUVERTURE
-========================================================= */
-
-.monument.open .door.left{
-  transform:rotateY(-112deg);
-}
-
-.monument.open .door.right{
-  transform:rotateY(112deg);
-}
-
-.monument.open .seal{
-  opacity:0;
-}
-
-.monument.open .portal-glow{
-  opacity:.8;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:700px){
-
-  .monument{
-    width:95vw;
-  }
-
-  .portal-frame{
-    width:38%;
-  }
-
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+    }
+
+    canvas {
+        display: block;
+    }
 </style>
 </head>
 
 <body>
 
-<div class="scene">
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+    }
+}
+</script>
 
-  <div class="monument" id="monument">
+<script type="module">
 
-    <div class="crown"></div>
-    <div class="crown-core"></div>
+import * as THREE from "three";
 
-    <div class="upper">
-      <div class="upper-windows"></div>
-    </div>
+/* =========================================
+   SCÈNE
+========================================= */
 
-    <div class="lower-band"></div>
+const scene = new THREE.Scene();
 
-    <div class="main-mass"></div>
+scene.background = new THREE.Color(0x000000);
+scene.fog = new THREE.FogExp2(0x000000, 0.025);
 
-    <div class="wing left">
-      <div class="niches">
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-      </div>
-    </div>
 
-    <div class="wing right">
-      <div class="niches">
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-        <div class="niche"></div>
-      </div>
-    </div>
+/* =========================================
+   CAMÉRA
+========================================= */
 
-    <div class="pillar left"></div>
-    <div class="pillar right"></div>
+const camera = new THREE.PerspectiveCamera(
+    48,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
 
-    <div class="portal-glow"></div>
+camera.position.set(0, 4, 22);
 
-    <div class="portal-frame">
+/*
+    La caméra regarde vers le haut :
+    le monument doit nous dominer.
+*/
 
-      <div class="doors">
-        <div class="door left"></div>
-        <div class="door right"></div>
-      </div>
+camera.lookAt(0, 9, 0);
 
-      <div class="seal"></div>
 
-    </div>
+/* =========================================
+   RENDERER
+========================================= */
 
-    <div class="base"></div>
-
-  </div>
-
-</div>
-
-<script>
-const monument = document.getElementById("monument");
-
-let opened = false;
-
-monument.addEventListener("click", () => {
-
-  if(opened) return;
-
-  opened = true;
-
-  monument.classList.add("open");
-
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
 });
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
+
+renderer.shadowMap.enabled = true;
+
+renderer.shadowMap.type =
+    THREE.PCFSoftShadowMap;
+
+renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+renderer.toneMapping =
+    THREE.ACESFilmicToneMapping;
+
+renderer.toneMappingExposure = 0.75;
+
+document.body.appendChild(
+    renderer.domElement
+);
+
+
+/* =========================================
+   MATÉRIAUX
+========================================= */
+
+const stone = new THREE.MeshStandardMaterial({
+    color: 0x292822,
+    roughness: 0.92,
+    metalness: 0.03
+});
+
+
+const darkStone = new THREE.MeshStandardMaterial({
+    color: 0x161713,
+    roughness: 1
+});
+
+
+const gold = new THREE.MeshStandardMaterial({
+    color: 0x9b681c,
+    roughness: 0.42,
+    metalness: 0.72
+});
+
+
+/* =========================================
+   OUTIL POUR CRÉER UN BLOC
+========================================= */
+
+function block(
+    width,
+    height,
+    depth,
+    x,
+    y,
+    z,
+    material = stone
+) {
+
+    const geometry =
+        new THREE.BoxGeometry(
+            width,
+            height,
+            depth
+        );
+
+    const mesh =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+    mesh.position.set(
+        x,
+        y,
+        z
+    );
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    scene.add(mesh);
+
+    return mesh;
+}
+
+
+/* =========================================
+   MASSE PRINCIPALE DU MONUMENT
+========================================= */
+
+block(
+    14,
+    17,
+    3,
+    0,
+    8.5,
+    0
+);
+
+
+/* masses latérales */
+
+block(
+    4,
+    13,
+    4,
+    -8,
+    6.5,
+    0.5,
+    darkStone
+);
+
+block(
+    4,
+    13,
+    4,
+    8,
+    6.5,
+    0.5,
+    darkStone
+);
+
+
+/* =========================================
+   ÉTAGES SUPÉRIEURS
+========================================= */
+
+block(
+    16,
+    1,
+    4,
+    0,
+    14,
+    0.3
+);
+
+block(
+    12,
+    4,
+    3.5,
+    0,
+    16.5,
+    0
+);
+
+block(
+    14,
+    0.7,
+    4,
+    0,
+    18.6,
+    0.2
+);
+
+block(
+    8,
+    3,
+    3,
+    0,
+    20.3,
+    0
+);
+
+
+/* =========================================
+   PILIERS
+========================================= */
+
+function pillar(x) {
+
+    const geometry =
+        new THREE.CylinderGeometry(
+            0.8,
+            1,
+            10,
+            20
+        );
+
+    const mesh =
+        new THREE.Mesh(
+            geometry,
+            stone
+        );
+
+    mesh.position.set(
+        x,
+        6,
+        2.3
+    );
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    scene.add(mesh);
+
+
+    /* base */
+
+    block(
+        2.4,
+        0.7,
+        2.4,
+        x,
+        1,
+        2.3
+    );
+
+
+    /* chapiteau */
+
+    block(
+        2.2,
+        0.7,
+        2.2,
+        x,
+        11,
+        2.3
+    );
+
+}
+
+pillar(-5.2);
+pillar(5.2);
+
+
+/* =========================================
+   ENCADREMENT DE LA PORTE
+========================================= */
+
+block(
+    1.1,
+    9,
+    1.4,
+    -3.3,
+    5,
+    2.2
+);
+
+block(
+    1.1,
+    9,
+    1.4,
+    3.3,
+    5,
+    2.2
+);
+
+block(
+    7.7,
+    1,
+    1.5,
+    0,
+    9.5,
+    2.2
+);
+
+
+/* =========================================
+   PORTE
+========================================= */
+
+const doorGroup =
+    new THREE.Group();
+
+scene.add(doorGroup);
+
+
+const doorGeometry =
+    new THREE.BoxGeometry(
+        3,
+        8,
+        0.35
+    );
+
+
+const leftDoor =
+    new THREE.Mesh(
+        doorGeometry,
+        gold
+    );
+
+leftDoor.position.set(
+    -1.5,
+    5,
+    2.7
+);
+
+leftDoor.castShadow = true;
+
+
+const rightDoor =
+    new THREE.Mesh(
+        doorGeometry,
+        gold
+    );
+
+rightDoor.position.set(
+    1.5,
+    5,
+    2.7
+);
+
+rightDoor.castShadow = true;
+
+
+doorGroup.add(leftDoor);
+doorGroup.add(rightDoor);
+
+
+/* reliefs verticaux */
+
+for (
+    let x = -2.5;
+    x <= 2.5;
+    x += 1
+) {
+
+    block(
+        0.12,
+        7.4,
+        0.18,
+        x,
+        5,
+        2.95,
+        gold
+    );
+
+}
+
+
+/* =========================================
+   ESCALIERS
+========================================= */
+
+for (
+    let i = 0;
+    i < 6;
+    i++
+) {
+
+    block(
+        12 + i * 1.3,
+        0.35,
+        2,
+        0,
+        0.15 - i * 0.25,
+        3.8 + i * 1.1,
+        darkStone
+    );
+
+}
+
+
+/* =========================================
+   SOL
+========================================= */
+
+const floor =
+    new THREE.Mesh(
+        new THREE.PlaneGeometry(
+            100,
+            100
+        ),
+        new THREE.MeshStandardMaterial({
+            color: 0x090a08,
+            roughness: 1
+        })
+    );
+
+floor.rotation.x =
+    -Math.PI / 2;
+
+floor.position.y =
+    -1.5;
+
+floor.receiveShadow = true;
+
+scene.add(floor);
+
+
+/* =========================================
+   ÉCLAIRAGE GÉNÉRAL
+========================================= */
+
+const ambient =
+    new THREE.HemisphereLight(
+        0x25271f,
+        0x050505,
+        0.35
+    );
+
+scene.add(ambient);
+
+
+/* =========================================
+   LUMIÈRE DORÉE DE LA PORTE
+========================================= */
+
+const doorLight =
+    new THREE.PointLight(
+        0xffb632,
+        70,
+        20,
+        2
+    );
+
+doorLight.position.set(
+    0,
+    5,
+    5
+);
+
+doorLight.castShadow = true;
+
+scene.add(doorLight);
+
+
+/* lumière supérieure très faible */
+
+const moonLight =
+    new THREE.DirectionalLight(
+        0x9ca7a0,
+        1.1
+    );
+
+moonLight.position.set(
+    -5,
+    18,
+    10
+);
+
+moonLight.castShadow = true;
+
+scene.add(moonLight);
+
+
+/* =========================================
+   OUVERTURE
+========================================= */
+
+let opening = false;
+let progress = 0;
+
+renderer.domElement.addEventListener(
+    "click",
+    () => {
+
+        if (!opening) {
+            opening = true;
+        }
+
+    }
+);
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+
+    if (opening && progress < 1) {
+
+        progress += 0.006;
+
+        const eased =
+            1 -
+            Math.pow(
+                1 - progress,
+                3
+            );
+
+        leftDoor.rotation.y =
+            eased * 1.45;
+
+        rightDoor.rotation.y =
+            -eased * 1.45;
+
+        doorLight.intensity =
+            70 + eased * 100;
+
+    }
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+animate();
+
+
+/* =========================================
+   RESIZE
+========================================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+    }
+);
+
 </script>
 
 </body>
