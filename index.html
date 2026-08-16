@@ -1,51 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIFE</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIFE</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial,sans-serif;
+}
+
+.scene{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  perspective:1600px;
+  background:#000;
+}
+
+.glow{
+  position:absolute;
+  width:180px;
+  height:65vh;
+  opacity:.12;
+  filter:blur(45px);
+  background:linear-gradient(
+    to bottom,
+    rgba(255,240,180,.2),
+    rgba(255,220,130,.9),
+    rgba(255,220,130,.15)
+  );
+  transition:opacity 3s ease,width 4s ease;
+}
+
+.gate{
+  position:relative;
+  width:min(680px,78vw);
+  height:min(850px,88vh);
+  transform-style:preserve-3d;
+  cursor:pointer;
+}
+
+.gate-svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,.9));
+}
+
+.frame{
+  fill:#11110f;
+  stroke:#665b3d;
+  stroke-width:5;
+}
+
+.frame-inner{
+  fill:none;
+  stroke:#8e7b4f;
+  stroke-width:2;
+  opacity:.75;
+}
+
+.door{
+  transform-box:fill-box;
+  transition:transform 4s cubic-bezier(.3,.02,.1,1);
+}
+
+.left{
+  transform-origin:left center;
+}
+
+.right{
+  transform-origin:right center;
+}
+
+.door-base{
+  fill:url(#doorGradient);
+  stroke:#756542;
+  stroke-width:3;
+}
+
+.panel{
+  fill:none;
+  stroke:#a08b58;
+  stroke-width:2;
+  opacity:.7;
+}
+
+.ornament{
+  fill:none;
+  stroke:#b6a06d;
+  stroke-width:3;
+  stroke-linecap:round;
+  opacity:.75;
+}
+
+.ornament-thin{
+  fill:none;
+  stroke:#8f7d55;
+  stroke-width:1.7;
+  opacity:.55;
+}
+
+.center-line{
+  stroke:#c8ae72;
+  stroke-width:3;
+  opacity:.5;
+}
+
+.rune{
+  fill:none;
+  stroke:#d2b979;
+  stroke-width:2.5;
+  opacity:.7;
+}
+
+.crown{
+  fill:none;
+  stroke:#b89d63;
+  stroke-width:4;
+  opacity:.75;
+}
+
+.gate.open .left{
+  transform:rotateY(-108deg);
+}
+
+.gate.open .right{
+  transform:rotateY(108deg);
+}
+
+.scene.open .glow{
+  opacity:1;
+  width:420px;
+}
+
+.gate:not(.open):hover{
+  transform:scale(1.01);
+}
+</style>
 </head>
 
 <body>
 
-    <main class="world">
+<div class="scene" id="scene">
 
-        <div class="light"></div>
+  <div class="glow"></div>
 
-        <div class="gate" id="gate">
+  <div class="gate" id="gate">
 
-            <div class="arch">
-                <div class="symbol">◇</div>
-            </div>
+    <svg
+      class="gate-svg"
+      viewBox="0 0 700 900"
+      xmlns="http://www.w3.org/2000/svg"
+    >
 
-            <div class="doors">
+      <defs>
 
-                <div class="door door-left">
-                    <div class="door-decoration">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
+        <linearGradient id="doorGradient" x1="0" x2="1">
+          <stop offset="0%" stop-color="#171611"/>
+          <stop offset="45%" stop-color="#29261b"/>
+          <stop offset="70%" stop-color="#1a1812"/>
+          <stop offset="100%" stop-color="#0d0d0b"/>
+        </linearGradient>
 
-                <div class="door door-right">
-                    <div class="door-decoration">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
+        <radialGradient id="archGlow">
+          <stop offset="0%" stop-color="#9c8754" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#11110f" stop-opacity="0"/>
+        </radialGradient>
 
-            </div>
+      </defs>
 
-            <div class="steps"></div>
+      <!-- halo arrière -->
+      <ellipse
+        cx="350"
+        cy="420"
+        rx="300"
+        ry="390"
+        fill="url(#archGlow)"
+      />
 
-        </div>
+      <!-- arche monumentale -->
+      <path
+        class="frame"
+        d="
+        M80 790
+        L80 360
+        C80 150 190 55 350 55
+        C510 55 620 150 620 360
+        L620 790
+        Z
 
-    </main>
+        M125 790
+        L125 370
+        C125 195 215 105 350 105
+        C485 105 575 195 575 370
+        L575 790
+        Z
+        "
+        fill-rule="evenodd"
+      />
 
-    <script src="script.js"></script>
+      <!-- lignes de profondeur -->
+      <path
+        class="frame-inner"
+        d="
+        M105 790
+        L105 365
+        C105 175 205 80 350 80
+        C495 80 595 175 595 365
+        L595 790
+        "
+      />
+
+      <!-- sommet -->
+      <path
+        class="crown"
+        d="
+        M285 120
+        Q350 55 415 120
+        Q385 92 350 150
+        Q315 92 285 120
+        "
+      />
+
+      <circle
+        class="rune"
+        cx="350"
+        cy="150"
+        r="23"
+      />
+
+      <path
+        class="rune"
+        d="
+        M350 134
+        L360 150
+        L350 166
+        L340 150
+        Z
+        "
+      />
+
+      <!-- PORTE GAUCHE -->
+      <g class="door left">
+
+        <path
+          class="door-base"
+          d="
+          M128 785
+          L128 370
+          C128 208 205 125 345 110
+          L345 785
+          Z
+          "
+        />
+
+        <path
+          class="panel"
+          d="
+          M155 740
+          L155 400
+          C155 255 220 180 320 160
+          L320 740
+          Z
+          "
+        />
+
+        <path
+          class="ornament"
+          d="
+          M235 660
+          C175 590 185 500 250 445
+          C300 405 300 335 255 285
+          "
+        />
+
+        <path
+          class="ornament"
+          d="
+          M235 660
+          C290 600 285 520 230 470
+          "
+        />
+
+        <path
+          class="ornament-thin"
+          d="
+          M180 585
+          C230 560 250 520 260 480
+          "
+        />
+
+        <path
+          class="ornament-thin"
+          d="
+          M175 515
+          C215 500 235 460 242 420
+          "
+        />
+
+        <circle
+          class="rune"
+          cx="260"
+          cy="355"
+          r="31"
+        />
+
+        <path
+          class="rune"
+          d="
+          M245 355
+          L260 335
+          L275 355
+          L260 375
+          Z
+          "
+        />
+
+      </g>
+
+      <!-- PORTE DROITE -->
+      <g class="door right">
+
+        <path
+          class="door-base"
+          d="
+          M355 110
+          C495 125 572 208 572 370
+          L572 785
+          L355 785
+          Z
+          "
+        />
+
+        <path
+          class="panel"
+          d="
+          M380 160
+          C480 180 545 255 545 400
+          L545 740
+          L380 740
+          Z
+          "
+        />
+
+        <path
+          class="ornament"
+          d="
+          M465 660
+          C525 590 515 500 450 445
+          C400 405 400 335 445 285
+          "
+        />
+
+        <path
+          class="ornament"
+          d="
+          M465 660
+          C410 600 415 520 470 470
+          "
+        />
+
+        <path
+          class="ornament-thin"
+          d="
+          M520 585
+          C470 560 450 520 440 480
+          "
+        />
+
+        <path
+          class="ornament-thin"
+          d="
+          M525 515
+          C485 500 465 460 458 420
+          "
+        />
+
+        <circle
+          class="rune"
+          cx="440"
+          cy="355"
+          r="31"
+        />
+
+        <path
+          class="rune"
+          d="
+          M425 355
+          L440 335
+          L455 355
+          L440 375
+          Z
+          "
+        />
+
+      </g>
+
+      <!-- joint central -->
+      <line
+        class="center-line"
+        x1="350"
+        y1="110"
+        x2="350"
+        y2="785"
+      />
+
+      <!-- sol -->
+      <path
+        d="
+        M60 785
+        L640 785
+        L700 900
+        L0 900
+        Z
+        "
+        fill="#080807"
+      />
+
+      <path
+        d="
+        M90 805
+        L610 805
+        "
+        stroke="#5e5337"
+        stroke-width="2"
+        opacity=".45"
+      />
+
+    </svg>
+
+  </div>
+
+</div>
+
+<script>
+const gate = document.getElementById("gate");
+const scene = document.getElementById("scene");
+
+let opened = false;
+
+gate.addEventListener("click", () => {
+  if (opened) return;
+
+  opened = true;
+
+  gate.classList.add("open");
+  scene.classList.add("open");
+});
+</script>
 
 </body>
 </html>
