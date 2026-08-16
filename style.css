@@ -1,220 +1,99 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Inter:wght@300;400;500&display=swap');
-
-:root {
-    --background: #0b0d0c;
-    --text: #e6e8e4;
-    --muted: #777d77;
-    --line: rgba(230, 232, 228, 0.12);
-}
-
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html,
-body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background: var(--background);
-    color: var(--text);
-    font-family: "Inter", sans-serif;
-    font-weight: 300;
+  width: 100vw;
+  height: 100vh;
+
+  background: #000;
+
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-button {
-    font: inherit;
+.life-container {
+  text-align: center;
 }
 
-.landing {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    padding: 35px 45px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background:
-        radial-gradient(
-            circle at 50% 48%,
-            rgba(150, 170, 145, 0.07),
-            transparent 35%
-        ),
-        var(--background);
+.life-title {
+  color: #e8eee8;
+
+  font-size: clamp(5rem, 16vw, 12rem);
+  font-weight: 500;
+
+  letter-spacing: 0.08em;
+
+  text-shadow:
+    0 0 5px rgba(220, 255, 220, 0.4),
+    0 0 20px rgba(150, 255, 170, 0.15),
+    0 0 50px rgba(120, 255, 150, 0.08);
+
+  animation: heartbeat 3.2s infinite ease-in-out;
 }
 
-.top,
-.bottom {
-    display: flex;
-    justify-content: space-between;
-    font-family: "DM Mono", monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--muted);
+.life-text {
+  margin-top: 28px;
+
+  color: rgba(255, 255, 255, 0.48);
+
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+
+  animation: breathe 5s infinite ease-in-out;
 }
 
-.center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: min(700px, 90%);
+
+/* Battement de LIFE */
+
+@keyframes heartbeat {
+
+  0% {
+    transform: scale(1);
+  }
+
+  8% {
+    transform: scale(1.025);
+  }
+
+  15% {
+    transform: scale(1);
+  }
+
+  22% {
+    transform: scale(1.015);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
 }
 
-.eyebrow {
-    font-family: "DM Mono", monospace;
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    margin-bottom: 35px;
-}
 
-h1 {
-    font-size: clamp(100px, 18vw, 240px);
-    line-height: 0.75;
-    font-weight: 300;
-    letter-spacing: -10px;
-}
+/* Respiration très légère du texte */
 
-.quote {
-    margin-top: 55px;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.8;
-}
+@keyframes breathe {
 
-#enter {
-    margin-top: 45px;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--text);
-    padding: 14px 20px;
-    min-width: 130px;
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: space-between;
-    gap: 25px;
-    transition:
-        background 0.4s ease,
-        border-color 0.4s ease,
-        transform 0.4s ease;
-}
+  0%,
+  100% {
+    opacity: 0.35;
+  }
 
-#enter:hover {
-    background: rgba(230, 232, 228, 0.06);
-    border-color: rgba(230, 232, 228, 0.3);
-    transform: translateY(-2px);
-}
+  50% {
+    opacity: 0.65;
+  }
 
-.arrow {
-    color: var(--muted);
-}
-
-.status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.status i {
-    display: block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #a8c9a2;
-    box-shadow: 0 0 12px rgba(168, 201, 162, 0.7);
-}
-
-.world {
-    position: fixed;
-    inset: 0;
-    background: #111512;
-    transform: translateY(100%);
-    transition: transform 1.2s cubic-bezier(.77,0,.18,1);
-}
-
-.world.visible {
-    transform: translateY(0);
-}
-
-.world-header {
-    position: absolute;
-    top: 35px;
-    left: 45px;
-    right: 45px;
-
-    display: flex;
-    justify-content: space-between;
-
-    font-family: "DM Mono", monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--muted);
-}
-
-.world-content {
-    position: absolute;
-    left: 10%;
-    top: 50%;
-    transform: translateY(-50%);
-    max-width: 650px;
-}
-
-.small {
-    font-family: "DM Mono", monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    margin-bottom: 25px;
-}
-
-h2 {
-    font-size: clamp(50px, 8vw, 110px);
-    font-weight: 300;
-    letter-spacing: -4px;
-}
-
-.world-content > p:not(.small) {
-    margin-top: 25px;
-    color: var(--muted);
-    max-width: 400px;
-    line-height: 1.7;
-}
-
-.line {
-    width: 100%;
-    height: 1px;
-    background: var(--line);
-    margin: 45px 0 25px;
-}
-
-#return {
-    border: none;
-    background: none;
-    color: var(--muted);
-    font-family: "DM Mono", monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    cursor: pointer;
-}
-
-#return:hover {
-    color: var(--text);
-}
-
-.noise {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.025;
-    z-index: 10;
-
-    background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
 }
