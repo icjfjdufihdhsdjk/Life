@@ -1,196 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>LIFE</title>
-
-<style>
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    background: #000;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    overflow: hidden;
-}
-
-.life-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.life-logo {
-    width: min(700px, 80vw);
-
-    overflow: visible;
-
-    transform-box: fill-box;
-    transform-origin: center;
-
-    animation: heartbeat 2s infinite;
-}
-
-.life-text {
-    fill: white;
-
-    font-family: Arial Black, Arial, sans-serif;
-    font-weight: 900;
-    font-size: 190px;
-}
-
-.subtitle {
-    margin-top: 18px;
-
-    color: white;
-
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-
-    opacity: 0.65;
-}
-
-
-/* BATTEMENT */
-
-@keyframes heartbeat {
-
-    0% {
-        transform: scale(1);
-    }
-
-    8% {
-        transform: scale(1.09);
-    }
-
-    14% {
-        transform: scale(1);
-    }
-
-    22% {
-        transform: scale(1.055);
-    }
-
-    29% {
-        transform: scale(1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIFE</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-<div class="life-wrapper">
+    <main class="world">
 
-    <svg
-        class="life-logo"
-        viewBox="0 0 700 230"
-        xmlns="http://www.w3.org/2000/svg"
-    >
+        <div class="light"></div>
 
-        <defs>
+        <div class="gate" id="gate">
 
-            <filter
-                id="organic"
-                x="-30%"
-                y="-30%"
-                width="160%"
-                height="160%"
-            >
+            <div class="arch">
+                <div class="symbol">◇</div>
+            </div>
 
-                <feTurbulence
-                    type="fractalNoise"
-                    baseFrequency="0.008 0.025"
-                    numOctaves="3"
-                    seed="12"
-                    result="noise"
-                >
+            <div class="doors">
 
-                    <animate
-                        attributeName="baseFrequency"
-                        values="
-                        0.008 0.025;
-                        0.012 0.035;
-                        0.007 0.022;
-                        0.010 0.030;
-                        0.008 0.025
-                        "
-                        dur="4s"
-                        repeatCount="indefinite"
-                    />
+                <div class="door door-left">
+                    <div class="door-decoration">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
 
-                </feTurbulence>
+                <div class="door door-right">
+                    <div class="door-decoration">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
 
+            </div>
 
-                <feDisplacementMap
-                    in="SourceGraphic"
-                    in2="noise"
-                    xChannelSelector="R"
-                    yChannelSelector="G"
-                    scale="22"
-                >
+            <div class="steps"></div>
 
-                    <animate
-                        attributeName="scale"
-                        values="
-                        16;
-                        28;
-                        19;
-                        25;
-                        16
-                        "
-                        dur="3s"
-                        repeatCount="indefinite"
-                    />
+        </div>
 
-                </feDisplacementMap>
+    </main>
 
-            </filter>
-
-        </defs>
-
-
-        <text
-            class="life-text"
-            x="350"
-            y="180"
-            text-anchor="middle"
-            filter="url(#organic)"
-        >
-            LIFE
-        </text>
-
-    </svg>
-
-
-    <div class="subtitle">
-        Life can begin anywhere.
-    </div>
-
-</div>
+    <script src="script.js"></script>
 
 </body>
 </html>
