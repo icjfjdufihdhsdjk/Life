@@ -6,12 +6,82 @@
   <title>LIFE</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div class="center">
-    <h1 class="life">LIFE</h1>
+  <main>
+
+    <svg
+      class="life-logo"
+      viewBox="0 0 700 220"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+
+      <defs>
+
+        <filter id="organic">
+
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.012"
+            numOctaves="3"
+            seed="4"
+            result="noise"
+          >
+            <animate
+              attributeName="baseFrequency"
+              values="
+                0.012;
+                0.018;
+                0.011;
+                0.016;
+                0.012
+              "
+              dur="4s"
+              repeatCount="indefinite"
+            />
+          </feTurbulence>
+
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="22"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          >
+            <animate
+              attributeName="scale"
+              values="
+                18;
+                28;
+                19;
+                25;
+                18
+              "
+              dur="4s"
+              repeatCount="indefinite"
+            />
+          </feDisplacementMap>
+
+        </filter>
+
+      </defs>
+
+      <text
+        class="life"
+        x="50%"
+        y="72%"
+        text-anchor="middle"
+        filter="url(#organic)"
+      >
+        LIFE
+      </text>
+
+    </svg>
+
     <p>Life can begin anywhere.</p>
-  </div>
+
+  </main>
 
 </body>
 </html>
