@@ -3,13 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Royaume</title>
+
+    <title>LIFE</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>Bienvenue.</h1>
-    <p>Quelque chose dort ici.</p>
+    <header>
+        <div class="logo">LIFE</div>
+
+        <nav>
+            <button data-page="home">HOME</button>
+            <button data-page="archive">ARCHIVE</button>
+            <button data-page="system">SYSTEM</button>
+        </nav>
+    </header>
+
+    <main>
+
+        <section id="home" class="page active">
+
+            <div class="hero">
+                <p class="label">LIFE PROJECT</p>
+
+                <h1>Living Information Framework Environment</h1>
+
+                <p class="description">
+                    Research and observation of artificial digital environments.
+                </p>
+
+                <div class="status">
+                    <span></span>
+                    SYSTEM ONLINE
+                </div>
+            </div>
+
+        </section>
+
+
+        <section id="archive" class="page">
+
+            <h2>ARCHIVE</h2>
+
+            <div class="file">
+                <span>FILE_001</span>
+                <p>Environment documentation.</p>
+            </div>
+
+            <div class="file">
+                <span>FILE_002</span>
+                <p>Unknown structure detected.</p>
+            </div>
+
+        </section>
+
+
+        <section id="system" class="page">
+
+            <h2>SYSTEM</h2>
+
+            <div class="system-info">
+                <p>STATUS: <strong>ONLINE</strong></p>
+                <p>VERSION: 1.0.4</p>
+                <p>ENVIRONMENT: STABLE</p>
+                <p>ENTITY: <strong>NOT DETECTED</strong></p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
