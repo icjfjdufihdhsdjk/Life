@@ -3,766 +3,854 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>LIFE</title>
 
 <style>
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-html,
-body {
-    width: 100%;
-    height: 100%;
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
 }
 
-body {
-    overflow: hidden;
-    background: #020303;
+body{
+  background:#020303;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
+.scene{
+  position:relative;
+  width:100vw;
+  height:100vh;
 
-/* ============================
-   SCÈNE
-============================ */
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
 
-.scene {
-    position: relative;
+  perspective:1800px;
 
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-
-    perspective: 1600px;
-
-    background:
-        radial-gradient(
-            ellipse at 50% 80%,
-            #10110f 0%,
-            #060706 28%,
-            #020303 60%,
-            #000 100%
-        );
+  background:
+    radial-gradient(
+      ellipse at 50% 78%,
+      #11120f 0%,
+      #080907 24%,
+      #030403 52%,
+      #000 100%
+    );
 }
 
-
-/* brume très légère au sol */
-
-.scene::after {
-    content: "";
-
-    position: absolute;
-
-    bottom: -80px;
-    left: 50%;
-
-    width: 900px;
-    height: 250px;
-
-    transform: translateX(-50%);
-
-    background:
-        radial-gradient(
-            ellipse,
-            rgba(150, 140, 100, .12),
-            transparent 65%
-        );
-
-    filter: blur(30px);
-
-    pointer-events: none;
+/* légère lueur de sol */
+.scene::after{
+  content:"";
+  position:absolute;
+  bottom:-8%;
+  left:50%;
+  width:70vw;
+  height:25vh;
+  transform:translateX(-50%);
+  background:radial-gradient(
+    ellipse,
+    rgba(150,130,85,.11),
+    transparent 70%
+  );
+  filter:blur(35px);
+  pointer-events:none;
 }
 
 
+/* =========================================================
+   MONUMENT
+========================================================= */
 
-/* ============================
-   TEMPLE
-============================ */
+.monument{
+  position:relative;
+  width:min(760px,80vw);
+  height:min(930px,96vh);
 
-.temple {
+  transform-style:preserve-3d;
 
-    position: relative;
-
-    width: min(920px, 90vw);
-    height: min(900px, 95vh);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-
-    filter:
-        drop-shadow(0 0 20px rgba(0,0,0,.9))
-        drop-shadow(0 25px 35px rgba(0,0,0,.9));
-
+  filter:
+    drop-shadow(0 0 25px rgba(0,0,0,.9))
+    drop-shadow(0 40px 50px rgba(0,0,0,.95));
 }
 
 
-/* ============================
-   SOMMET
-============================ */
+/* =========================================================
+   MASSE PRINCIPALE
+========================================================= */
 
-.crown {
+.main-mass{
+  position:absolute;
+  left:50%;
+  bottom:0;
 
-    position: absolute;
+  width:72%;
+  height:77%;
 
-    top: 2%;
+  transform:translateX(-50%);
 
-    width: 66%;
-    height: 180px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #171712,
-            #373329,
-            #25231d,
-            #3d382d,
-            #151511
-        );
-
-    clip-path: polygon(
-        7% 100%,
-        12% 62%,
-        22% 58%,
-        29% 31%,
-        40% 27%,
-        50% 5%,
-        60% 27%,
-        71% 31%,
-        78% 58%,
-        88% 62%,
-        93% 100%
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.025) 0 3px,
+      transparent 3px 32px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,.16) 0 3px,
+      transparent 3px 48px
+    ),
+    linear-gradient(
+      90deg,
+      #171815 0%,
+      #292922 12%,
+      #3a382e 25%,
+      #23241f 50%,
+      #3a382e 75%,
+      #292922 88%,
+      #171815 100%
     );
 
-    border-bottom: 8px solid #484238;
+  border-left:8px solid #4a4941;
+  border-right:8px solid #4a4941;
+
+  box-shadow:
+    inset 0 0 65px rgba(0,0,0,.6),
+    inset 0 35px 50px rgba(0,0,0,.45);
 }
 
 
-.crown::after {
+/* =========================================================
+   AILES LATÉRALES
+========================================================= */
 
-    content: "";
+.wing{
+  position:absolute;
+  bottom:5%;
+  width:23%;
+  height:58%;
 
-    position: absolute;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #2c2c26 0 25px,
+      #20211d 25px 31px
+    );
 
-    left: 50%;
-    top: 38%;
+  border:6px solid #44443c;
 
-    width: 90px;
-    height: 90px;
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,.55);
+}
 
-    transform:
-        translateX(-50%)
-        rotate(45deg);
+.wing.left{
+  left:2%;
+  transform:translateZ(-25px);
+}
 
-    border: 5px solid #5e5748;
-
-    opacity: .65;
-
+.wing.right{
+  right:2%;
+  transform:translateZ(-25px);
 }
 
 
+/* corniches ailes */
 
-/* ============================
+.wing::before,
+.wing::after{
+  content:"";
+  position:absolute;
+  left:-12px;
+  width:calc(100% + 24px);
+  height:22px;
+
+  background:
+    linear-gradient(
+      #5a594f,
+      #34342e
+    );
+
+  border-top:3px solid #68665b;
+  border-bottom:3px solid #23231f;
+}
+
+.wing::before{
+  top:18%;
+}
+
+.wing::after{
+  top:58%;
+}
+
+
+/* =========================================================
+   NICHES
+========================================================= */
+
+.niches{
+  position:absolute;
+  inset:0;
+
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  grid-template-rows:repeat(4,1fr);
+
+  gap:24px 14px;
+
+  padding:65px 25px 35px;
+}
+
+.niche{
+  background:
+    linear-gradient(
+      90deg,
+      #070807,
+      #151511,
+      #070807
+    );
+
+  border:
+    4px solid #49483f;
+
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,.95);
+
+  position:relative;
+}
+
+.niche::after{
+  content:"";
+  position:absolute;
+  inset:7px;
+
+  border:1px solid rgba(150,145,120,.15);
+}
+
+
+/* =========================================================
+   BANDE ARCHITECTURALE INFÉRIEURE
+========================================================= */
+
+.lower-band{
+  position:absolute;
+  left:50%;
+  bottom:56%;
+
+  width:88%;
+  height:9%;
+
+  transform:translateX(-50%) translateZ(25px);
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #32322b 0 30px,
+      #47463d 30px 60px
+    );
+
+  border-top:6px solid #676358;
+  border-bottom:8px solid #272722;
+
+  box-shadow:
+    0 12px 20px rgba(0,0,0,.75);
+}
+
+
+/* petites ouvertures */
+
+.lower-band::after{
+  content:"";
+  position:absolute;
+  left:5%;
+  top:31%;
+
+  width:90%;
+  height:26%;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #080908 0 20px,
+      transparent 20px 38px
+    );
+}
+
+
+/* =========================================================
    ÉTAGE SUPÉRIEUR
-============================ */
-
-.upper {
-
-    position: absolute;
-
-    top: 17%;
-
-    width: 78%;
-    height: 190px;
-
-    background:
-        repeating-linear-gradient(
-            90deg,
-            #25241e 0 55px,
-            #302e26 55px 110px
-        );
-
-    border:
-        7px solid #444137;
-
-    box-shadow:
-        inset 0 -25px 30px rgba(0,0,0,.65);
-
-}
-
-
-.upper::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 30px;
-    left: 6%;
-
-    width: 88%;
-    height: 60px;
-
-    background:
-        repeating-linear-gradient(
-            90deg,
-            #080908 0 25px,
-            #353229 25px 42px,
-            #080908 42px 67px
-        );
-
-    border-top: 5px solid #4c483d;
-    border-bottom: 5px solid #4c483d;
-
-}
-
-
-
-/* ============================
-   BANDEAU CENTRAL
-============================ */
-
-.band {
-
-    position: absolute;
-
-    top: 34%;
-
-    width: 88%;
-    height: 70px;
-
-    background:
-        linear-gradient(
-            #504a3d,
-            #24231e 35%,
-            #171713 65%,
-            #514b3e
-        );
-
-    border-top: 6px solid #666054;
-    border-bottom: 7px solid #343129;
-
-}
-
-.band::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 18px 5%;
-
-    border-top: 2px solid #71684d;
-    border-bottom: 2px solid #71684d;
-
-}
-
-
-
-/* ============================
-   CORPS PRINCIPAL
-============================ */
-
-.main-building {
-
-    position: absolute;
-
-    bottom: 0;
-
-    width: 82%;
-    height: 61%;
-
-    background:
-
-        repeating-linear-gradient(
-            0deg,
-            transparent 0 37px,
-            rgba(255,255,255,.025) 38px 40px
-        ),
-
-        repeating-linear-gradient(
-            90deg,
-            transparent 0 52px,
-            rgba(0,0,0,.17) 52px 56px
-        ),
-
-        linear-gradient(
-            90deg,
-            #1b1c19,
-            #38362e 18%,
-            #23231f 50%,
-            #39372f 82%,
-            #191a17
-        );
-
-    border-left: 9px solid #48463e;
-    border-right: 9px solid #48463e;
-
-}
-
-
-
-/* ============================
-   COLONNES
-============================ */
-
-.column {
-
-    position: absolute;
-
-    bottom: 4%;
-
-    width: 86px;
-    height: 52%;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            #171815,
-            #56534a,
-            #2a2a25,
-            #5a564b,
-            #171815
-        );
-
-    border: 5px solid #555249;
-
-}
-
-
-.column::before,
-.column::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: -15px;
-
-    width: calc(100% + 30px);
-
-    height: 25px;
-
-    background: #4b4941;
-
-    border-top: 4px solid #656157;
-    border-bottom: 4px solid #2a2925;
-
-}
-
-.column::before {
-    top: -12px;
-}
-
-.column::after {
-    bottom: -12px;
-}
-
-
-.column.left {
-    left: 16%;
-}
-
-.column.right {
-    right: 16%;
-}
-
-
-
-/* ============================
-   STRUCTURE AUTOUR DE LA PORTE
-============================ */
-
-.portal-frame {
-
-    position: absolute;
-
-    bottom: 3%;
-
-    width: 390px;
-    height: 500px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #424139,
-            #777267,
-            #34342f,
-            #787267,
-            #403f38
-        );
-
-    padding: 35px;
-
-    box-shadow:
-        0 0 30px rgba(0,0,0,.9);
-
-}
-
-
-.portal-frame::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: -25px;
-    top: -25px;
-
-    width: calc(100% + 50px);
-    height: 35px;
-
-    background:
-        linear-gradient(
-            #6c675c,
-            #35342f
-        );
-
-    border-top: 4px solid #827d71;
-
-}
-
-
-
-/* ============================
-   LUMIÈRE DERRIÈRE
-============================ */
-
-.portal-light {
-
-    position: absolute;
-
-    bottom: 4%;
-
-    width: 250px;
-    height: 410px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #5e3a0c,
-            #d59d32,
-            #fff0a5,
-            #d59d32,
-            #5e3a0c
-        );
-
-    opacity: .3;
-
-    filter: blur(25px);
-
-    transition:
-        opacity 4s ease,
-        width 4s ease;
-
-}
-
-
-
-/* ============================
-   PORTES
-============================ */
-
-.doors {
-
-    position: absolute;
-
-    inset: 35px;
-
-    display: flex;
-
-    perspective: 1200px;
-
-    overflow: visible;
-
-}
-
-
-.door {
-
-    position: relative;
-
-    width: 50%;
-    height: 100%;
-
-    background:
-
-        repeating-linear-gradient(
-            90deg,
-            transparent 0 29px,
-            rgba(255,235,150,.09) 30px 33px
-        ),
-
-        repeating-linear-gradient(
-            0deg,
-            transparent 0 45px,
-            rgba(80,45,5,.3) 46px 49px
-        ),
-
-        linear-gradient(
-            90deg,
-            #6c400b,
-            #b97d19,
-            #d7a936,
-            #82500d
-        );
-
-    border: 4px solid #8d6825;
-
-    box-shadow:
-        inset 0 0 35px rgba(55,30,0,.9);
-
-    transition:
-        transform 4.5s cubic-bezier(.2,.7,.05,1);
-
-}
-
-
-.door-left {
-
-    transform-origin: left center;
-
-}
-
-
-.door-right {
-
-    transform-origin: right center;
-
-}
-
-
-
-/* ornements */
-
-.door::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 22px;
-
-    border: 3px solid rgba(255,220,120,.38);
-
-}
-
-
-.door::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-    top: 13%;
-
-    width: 45%;
-    height: 74%;
-
-    transform: translateX(-50%);
-
-    border-left: 3px solid rgba(255,225,130,.28);
-    border-right: 3px solid rgba(255,225,130,.28);
-
-}
-
-
-
-/* ============================
-   JOINT CENTRAL
-============================ */
-
-.seal {
-
-    position: absolute;
-
-    left: 50%;
-    top: 35px;
-
-    width: 8px;
-    height: calc(100% - 70px);
-
-    transform: translateX(-50%);
-
-    background:
-        linear-gradient(
-            #70501e,
-            #efc253,
-            #70501e
-        );
-
-    z-index: 5;
-
-    box-shadow:
-        0 0 10px rgba(255,190,60,.25);
-
-    transition: opacity 1s ease;
-
-}
-
-
-
-/* ============================
-   SOCLE
-============================ */
-
-.base {
-
-    position: absolute;
-
-    bottom: -45px;
-
-    width: 100%;
-    height: 90px;
-
-    background:
-        linear-gradient(
-            #3a3933,
-            #151614
-        );
-
-    clip-path: polygon(
-        5% 0,
-        95% 0,
-        100% 100%,
-        0 100%
+========================================================= */
+
+.upper{
+  position:absolute;
+  left:50%;
+  top:14%;
+
+  width:80%;
+  height:25%;
+
+  transform:translateX(-50%);
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #272720 0 48px,
+      #333229 48px 96px
     );
 
-    border-top: 5px solid #555249;
+  border:
+    7px solid #45443a;
+
+  box-shadow:
+    inset 0 -35px 30px rgba(0,0,0,.55);
+}
+
+.upper::before{
+  content:"";
+  position:absolute;
+  left:-7%;
+  bottom:-13px;
+
+  width:114%;
+  height:28px;
+
+  background:
+    linear-gradient(
+      #5b574a,
+      #2d2d27
+    );
+
+  border-top:4px solid #6e695a;
+  border-bottom:4px solid #22231f;
+}
+
+.upper-windows{
+  position:absolute;
+  left:5%;
+  top:25%;
+
+  width:90%;
+  height:40%;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #090a09 0 22px,
+      #39372f 22px 45px
+    );
+
+  border-top:4px solid #47463d;
+  border-bottom:4px solid #47463d;
+}
+
+
+/* =========================================================
+   SOMMET
+========================================================= */
+
+.crown{
+  position:absolute;
+  left:50%;
+  top:-3%;
+
+  width:66%;
+  height:27%;
+
+  transform:translateX(-50%);
+
+  clip-path:polygon(
+    5% 100%,
+    10% 75%,
+    20% 68%,
+    26% 46%,
+    38% 42%,
+    50% 10%,
+    62% 42%,
+    74% 46%,
+    80% 68%,
+    90% 75%,
+    95% 100%
+  );
+
+  background:
+    linear-gradient(
+      90deg,
+      #171713,
+      #3a372d,
+      #201f1a,
+      #474237,
+      #201f1a,
+      #39372d,
+      #171713
+    );
+
+  border-bottom:8px solid #4e4a40;
+
+  filter:brightness(.85);
+}
+
+.crown-core{
+  position:absolute;
+  left:50%;
+  top:5%;
+
+  width:29%;
+  height:18%;
+
+  transform:translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+      #191914,
+      #39362c,
+      #1b1b17
+    );
+
+  clip-path:polygon(
+    10% 100%,
+    18% 42%,
+    34% 42%,
+    50% 0,
+    66% 42%,
+    82% 42%,
+    90% 100%
+  );
+
+  opacity:.9;
+}
+
+
+/* =========================================================
+   PILIERS MASSIFS
+========================================================= */
+
+.pillar{
+  position:absolute;
+  bottom:3%;
+
+  width:13%;
+  height:57%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #171815,
+      #414038,
+      #625e53,
+      #34342e,
+      #171815
+    );
+
+  border:
+    6px solid #4d4d45;
+
+  transform:translateZ(50px);
+
+  box-shadow:
+    0 15px 20px rgba(0,0,0,.6);
+}
+
+.pillar.left{
+  left:18%;
+}
+
+.pillar.right{
+  right:18%;
+}
+
+.pillar::before,
+.pillar::after{
+  content:"";
+  position:absolute;
+  left:-14px;
+
+  width:calc(100% + 28px);
+  height:32px;
+
+  background:
+    linear-gradient(
+      #666258,
+      #36352f
+    );
+
+  border-top:4px solid #747065;
+  border-bottom:4px solid #242420;
+}
+
+.pillar::before{
+  top:-18px;
+}
+
+.pillar::after{
+  bottom:-18px;
+}
+
+
+/* =========================================================
+   CADRE DE PORTE
+========================================================= */
+
+.portal-frame{
+  position:absolute;
+  left:50%;
+  bottom:3%;
+
+  width:34%;
+  height:48%;
+
+  transform:
+    translateX(-50%)
+    translateZ(80px);
+
+  background:
+    linear-gradient(
+      90deg,
+      #33332d,
+      #69665d 12%,
+      #3d3d36 24%,
+      #77736a 50%,
+      #3d3d36 76%,
+      #69665d 88%,
+      #33332d
+    );
+
+  padding:28px;
+
+  border:
+    7px solid #56554c;
+
+  box-shadow:
+    0 0 32px rgba(0,0,0,.95),
+    inset 0 0 20px rgba(0,0,0,.4);
+}
+
+
+/* gros linteau */
+
+.portal-frame::before{
+  content:"";
+  position:absolute;
+  left:-11%;
+  top:-30px;
+
+  width:122%;
+  height:36px;
+
+  background:
+    linear-gradient(
+      #777268,
+      #44433c
+    );
+
+  border-top:4px solid #858077;
+  border-bottom:5px solid #292925;
 
 }
 
 
+/* =========================================================
+   LUMIÈRE DE PORTE
+========================================================= */
 
-/* ============================
+.portal-glow{
+  position:absolute;
+  left:50%;
+  bottom:6%;
+
+  width:18%;
+  height:39%;
+
+  transform:translateX(-50%);
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,190,65,.72),
+      rgba(160,95,10,.2) 55%,
+      transparent 75%
+    );
+
+  filter:blur(30px);
+
+  opacity:.33;
+}
+
+
+/* =========================================================
+   PORTES DORÉES
+========================================================= */
+
+.doors{
+  position:absolute;
+  inset:28px;
+
+  display:flex;
+
+  perspective:1500px;
+  transform-style:preserve-3d;
+}
+
+.door{
+  position:relative;
+  width:50%;
+  height:100%;
+
+  background:
+
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 43px,
+      rgba(80,50,10,.28) 43px 47px
+    ),
+
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 25px,
+      rgba(255,220,120,.12) 25px 28px
+    ),
+
+    linear-gradient(
+      90deg,
+      #563608 0%,
+      #8f5c10 22%,
+      #c28e27 48%,
+      #8f5c10 72%,
+      #503107 100%
+    );
+
+  border:
+    4px solid #8d6722;
+
+  box-shadow:
+    inset 0 0 30px rgba(48,25,0,.8);
+
+  transition:
+    transform 4.5s cubic-bezier(.17,.67,.08,1);
+}
+
+.door.left{
+  transform-origin:left center;
+}
+
+.door.right{
+  transform-origin:right center;
+}
+
+
+/* panneaux décoratifs */
+
+.door::before{
+  content:"";
+  position:absolute;
+  inset:18px;
+
+  border:
+    2px solid rgba(255,220,130,.35);
+}
+
+.door::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:9%;
+
+  width:40%;
+  height:82%;
+
+  transform:translateX(-50%);
+
+  border-left:
+    2px solid rgba(255,220,130,.28);
+
+  border-right:
+    2px solid rgba(255,220,130,.28);
+}
+
+
+/* joint central */
+
+.seal{
+  position:absolute;
+  left:50%;
+  top:28px;
+
+  width:7px;
+  height:calc(100% - 56px);
+
+  transform:translateX(-50%);
+
+  background:
+    linear-gradient(
+      #704c14,
+      #e1b64b,
+      #704c14
+    );
+
+  z-index:10;
+
+  box-shadow:
+    0 0 11px rgba(255,190,70,.25);
+
+  transition:opacity 1s ease;
+}
+
+
+/* =========================================================
+   SOCLE
+========================================================= */
+
+.base{
+  position:absolute;
+  left:50%;
+  bottom:-2%;
+
+  width:98%;
+  height:8%;
+
+  transform:translateX(-50%);
+
+  background:
+    linear-gradient(
+      #373732,
+      #151614
+    );
+
+  clip-path:polygon(
+    6% 0,
+    94% 0,
+    100% 100%,
+    0 100%
+  );
+
+  border-top:
+    5px solid #4c4c45;
+}
+
+
+/* =========================================================
    OUVERTURE
-============================ */
+========================================================= */
 
-.temple.open .door-left {
-    transform: rotateY(-112deg);
+.monument.open .door.left{
+  transform:rotateY(-112deg);
 }
 
-.temple.open .door-right {
-    transform: rotateY(112deg);
+.monument.open .door.right{
+  transform:rotateY(112deg);
 }
 
-.temple.open .seal {
-    opacity: 0;
+.monument.open .seal{
+  opacity:0;
 }
 
-.temple.open .portal-light {
-    opacity: .95;
-    width: 410px;
+.monument.open .portal-glow{
+  opacity:.8;
 }
 
 
-
-/* ============================
+/* =========================================================
    RESPONSIVE
-============================ */
+========================================================= */
 
-@media (max-width: 650px) {
+@media(max-width:700px){
 
-    .portal-frame {
-        width: 270px;
-        height: 390px;
-    }
+  .monument{
+    width:95vw;
+  }
 
-    .column {
-        width: 60px;
-    }
+  .portal-frame{
+    width:38%;
+  }
 
 }
-
 </style>
 </head>
 
-
 <body>
-
 
 <div class="scene">
 
+  <div class="monument" id="monument">
 
-    <div class="temple" id="temple">
+    <div class="crown"></div>
+    <div class="crown-core"></div>
 
+    <div class="upper">
+      <div class="upper-windows"></div>
+    </div>
 
-        <div class="crown"></div>
+    <div class="lower-band"></div>
 
-        <div class="upper"></div>
+    <div class="main-mass"></div>
 
-        <div class="band"></div>
+    <div class="wing left">
+      <div class="niches">
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+      </div>
+    </div>
 
-        <div class="main-building"></div>
+    <div class="wing right">
+      <div class="niches">
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+        <div class="niche"></div>
+      </div>
+    </div>
 
+    <div class="pillar left"></div>
+    <div class="pillar right"></div>
 
-        <div class="column left"></div>
+    <div class="portal-glow"></div>
 
-        <div class="column right"></div>
+    <div class="portal-frame">
 
+      <div class="doors">
+        <div class="door left"></div>
+        <div class="door right"></div>
+      </div>
 
-        <div class="portal-light"></div>
-
-
-        <div class="portal-frame">
-
-
-            <div class="doors">
-
-
-                <div class="door door-left"></div>
-
-                <div class="door door-right"></div>
-
-
-            </div>
-
-
-            <div class="seal"></div>
-
-
-        </div>
-
-
-        <div class="base"></div>
-
+      <div class="seal"></div>
 
     </div>
 
+    <div class="base"></div>
+
+  </div>
 
 </div>
 
-
-
 <script>
-
-const temple = document.getElementById("temple");
+const monument = document.getElementById("monument");
 
 let opened = false;
 
+monument.addEventListener("click", () => {
 
-temple.addEventListener("click", () => {
+  if(opened) return;
 
-    if (opened) return;
+  opened = true;
 
-    opened = true;
-
-    temple.classList.add("open");
+  monument.classList.add("open");
 
 });
-
 </script>
-
 
 </body>
 </html>
