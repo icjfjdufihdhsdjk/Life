@@ -4,10 +4,14 @@
   box-sizing: border-box;
 }
 
+html,
 body {
-  width: 100vw;
-  height: 100vh;
-  background: black;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #000;
 
   display: flex;
   justify-content: center;
@@ -16,61 +20,59 @@ body {
   overflow: hidden;
 }
 
-.center {
+main {
   text-align: center;
 }
 
-.life {
-  font-family: Georgia, serif;
-  font-size: 150px;
-  font-weight: bold;
+.life-logo {
+  width: min(700px, 80vw);
 
-  color: #d7e3d3;
-
-  letter-spacing: -8px;
-
-  transform-origin: center;
-
-  filter:
-    blur(0.2px)
-    drop-shadow(0 0 8px rgba(170, 255, 180, 0.25));
-
-  animation: beat 1.6s infinite;
+  animation: heartbeat 2.2s infinite;
 }
 
-.life::first-letter {
-  font-style: italic;
+.life {
+  fill: #eeeeea;
+
+  font-family: Arial Black, Arial, sans-serif;
+  font-size: 190px;
+  font-weight: 900;
+
+  letter-spacing: -10px;
 }
 
 p {
-  margin-top: 25px;
-
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+  margin-top: -15px;
 
   color: #777;
 
-  letter-spacing: 3px;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+
+  letter-spacing: 2px;
 }
 
-@keyframes beat {
+
+/* véritable pulsation */
+
+@keyframes heartbeat {
+
   0% {
     transform: scale(1);
   }
 
-  10% {
-    transform: scale(1.10, 1.06);
+  8% {
+    transform: scale(1.08);
   }
 
-  18% {
-    transform: scale(1);
+  14% {
+    transform: scale(0.99);
+  }
+
+  21% {
+    transform: scale(1.045);
   }
 
   28% {
-    transform: scale(1.06, 1.03);
-  }
-
-  36% {
     transform: scale(1);
   }
 
