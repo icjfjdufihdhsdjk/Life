@@ -1,206 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>LIFE</title>
+<title>LIFE</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.life-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.life-logo {
+    width: min(700px, 80vw);
+
+    overflow: visible;
+
+    transform-box: fill-box;
+    transform-origin: center;
+
+    animation: heartbeat 2s infinite;
+}
+
+.life-text {
+    fill: white;
+
+    font-family: Arial Black, Arial, sans-serif;
+    font-weight: 900;
+    font-size: 190px;
+}
+
+.subtitle {
+    margin-top: 18px;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+
+    opacity: 0.65;
+}
+
+
+/* BATTEMENT */
+
+@keyframes heartbeat {
+
+    0% {
+        transform: scale(1);
     }
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
+    8% {
+        transform: scale(1.09);
     }
 
-    body {
-      background: #000;
-      overflow: hidden;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    14% {
+        transform: scale(1);
     }
 
-    .container {
-      text-align: center;
+    22% {
+        transform: scale(1.055);
     }
 
-    svg {
-      width: min(850px, 85vw);
-      overflow: visible;
+    29% {
+        transform: scale(1);
     }
 
-    .life-text {
-      fill: #e9e9e4;
-
-      font-family: Impact, "Arial Black", sans-serif;
-      font-weight: 900;
-      font-size: 210px;
-
-      letter-spacing: 5px;
+    100% {
+        transform: scale(1);
     }
 
-    .sentence {
-      margin-top: 8px;
+}
 
-      color: #d6d6d6;
-
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-  </style>
+</style>
 </head>
+
 
 <body>
 
-<div class="container">
+<div class="life-wrapper">
 
-  <svg viewBox="0 0 900 260">
+    <svg
+        class="life-logo"
+        viewBox="0 0 700 230"
+        xmlns="http://www.w3.org/2000/svg"
+    >
 
-    <defs>
+        <defs>
 
-      <filter
-        id="organic"
-        x="-40%"
-        y="-40%"
-        width="180%"
-        height="180%"
-      >
+            <filter
+                id="organic"
+                x="-30%"
+                y="-30%"
+                width="160%"
+                height="160%"
+            >
 
-        <!-- texture vivante -->
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.015 0.035"
-          numOctaves="2"
-          seed="8"
-          result="noise"
-        >
+                <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.008 0.025"
+                    numOctaves="3"
+                    seed="12"
+                    result="noise"
+                >
 
-          <animate
-            attributeName="baseFrequency"
-            dur="5s"
-            values="
-              0.015 0.035;
-              0.022 0.045;
-              0.012 0.030;
-              0.020 0.040;
-              0.015 0.035
-            "
-            repeatCount="indefinite"
-          />
+                    <animate
+                        attributeName="baseFrequency"
+                        values="
+                        0.008 0.025;
+                        0.012 0.035;
+                        0.007 0.022;
+                        0.010 0.030;
+                        0.008 0.025
+                        "
+                        dur="4s"
+                        repeatCount="indefinite"
+                    />
 
-        </feTurbulence>
-
-
-        <!-- déformation des lettres -->
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="noise"
-          scale="38"
-          xChannelSelector="R"
-          yChannelSelector="G"
-        >
-
-          <animate
-            attributeName="scale"
-            dur="3.5s"
-            values="
-              28;
-              42;
-              32;
-              48;
-              28
-            "
-            repeatCount="indefinite"
-          />
-
-        </feDisplacementMap>
-
-      </filter>
-
-    </defs>
+                </feTurbulence>
 
 
-    <!--
-      Groupe entier qui bat.
-      Le centre du mot est environ 450 / 140.
-    -->
+                <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="noise"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                    scale="22"
+                >
 
-    <g filter="url(#organic)">
+                    <animate
+                        attributeName="scale"
+                        values="
+                        16;
+                        28;
+                        19;
+                        25;
+                        16
+                        "
+                        dur="3s"
+                        repeatCount="indefinite"
+                    />
 
-      <animateTransform
-        attributeName="transform"
-        type="translate"
-        values="
-          0 0;
-          -18 -7;
-          0 0;
-          -10 -4;
-          0 0;
-          0 0
-        "
-        keyTimes="
-          0;
-          .08;
-          .15;
-          .23;
-          .30;
-          1
-        "
-        dur="1.8s"
-        repeatCount="indefinite"
-      />
+                </feDisplacementMap>
 
-      <g>
+            </filter>
 
-        <animateTransform
-          attributeName="transform"
-          type="scale"
-          values="
-            1 1;
-            1.08 1.06;
-            1 1;
-            1.045 1.03;
-            1 1;
-            1 1
-          "
-          keyTimes="
-            0;
-            .08;
-            .15;
-            .23;
-            .30;
-            1
-          "
-          dur="1.8s"
-          repeatCount="indefinite"
-        />
+        </defs>
+
 
         <text
-          class="life-text"
-          x="450"
-          y="195"
-          text-anchor="middle"
+            class="life-text"
+            x="350"
+            y="180"
+            text-anchor="middle"
+            filter="url(#organic)"
         >
-          LIFE
+            LIFE
         </text>
 
-      </g>
+    </svg>
 
-    </g>
 
-  </svg>
-
-  <div class="sentence">
-    Life can begin anywhere.
-  </div>
+    <div class="subtitle">
+        Life can begin anywhere.
+    </div>
 
 </div>
 
