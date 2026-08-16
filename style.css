@@ -7,93 +7,74 @@
 body {
   width: 100vw;
   height: 100vh;
-
-  background: #000;
-
-  overflow: hidden;
+  background: black;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
 }
 
-.life-container {
+.center {
   text-align: center;
 }
 
-.life-title {
-  color: #e8eee8;
+.life {
+  font-family: Georgia, serif;
+  font-size: 150px;
+  font-weight: bold;
 
-  font-size: clamp(5rem, 16vw, 12rem);
-  font-weight: 500;
+  color: #d7e3d3;
 
-  letter-spacing: 0.08em;
+  letter-spacing: -8px;
 
-  text-shadow:
-    0 0 5px rgba(220, 255, 220, 0.4),
-    0 0 20px rgba(150, 255, 170, 0.15),
-    0 0 50px rgba(120, 255, 150, 0.08);
+  transform-origin: center;
 
-  animation: heartbeat 3.2s infinite ease-in-out;
+  filter:
+    blur(0.2px)
+    drop-shadow(0 0 8px rgba(170, 255, 180, 0.25));
+
+  animation: beat 1.6s infinite;
 }
 
-.life-text {
-  margin-top: 28px;
-
-  color: rgba(255, 255, 255, 0.48);
-
-  font-size: 0.8rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-
-  animation: breathe 5s infinite ease-in-out;
+.life::first-letter {
+  font-style: italic;
 }
 
+p {
+  margin-top: 25px;
 
-/* Battement de LIFE */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 
-@keyframes heartbeat {
+  color: #777;
 
+  letter-spacing: 3px;
+}
+
+@keyframes beat {
   0% {
     transform: scale(1);
   }
 
-  8% {
-    transform: scale(1.025);
+  10% {
+    transform: scale(1.10, 1.06);
   }
 
-  15% {
+  18% {
     transform: scale(1);
   }
 
-  22% {
-    transform: scale(1.015);
+  28% {
+    transform: scale(1.06, 1.03);
   }
 
-  30% {
+  36% {
     transform: scale(1);
   }
 
   100% {
     transform: scale(1);
   }
-
-}
-
-
-/* Respiration très légère du texte */
-
-@keyframes breathe {
-
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-
-  50% {
-    opacity: 0.65;
-  }
-
 }
