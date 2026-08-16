@@ -1,82 +1,319 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 body {
-  background: #000;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  overflow: hidden;
-}
-
-main {
-  text-align: center;
-}
-
-.life-logo {
-  width: min(700px, 80vw);
-
-  animation: heartbeat 2.2s infinite;
-}
-
-.life {
-  fill: #eeeeea;
-
-  font-family: Arial Black, Arial, sans-serif;
-  font-size: 190px;
-  font-weight: 900;
-
-  letter-spacing: -10px;
-}
-
-p {
-  margin-top: -15px;
-
-  color: #777;
-
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-
-  letter-spacing: 2px;
+    background: #000;
+    overflow: hidden;
 }
 
 
-/* véritable pulsation */
+/* =========================
+   MONDE
+========================= */
 
-@keyframes heartbeat {
+.world {
+    width: 100vw;
+    height: 100vh;
 
-  0% {
-    transform: scale(1);
-  }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  8% {
-    transform: scale(1.08);
-  }
+    perspective: 1400px;
 
-  14% {
-    transform: scale(0.99);
-  }
+    background:
+        radial-gradient(
+            ellipse at center,
+            #10130f 0%,
+            #050605 45%,
+            #000 75%
+        );
+}
 
-  21% {
-    transform: scale(1.045);
-  }
 
-  28% {
-    transform: scale(1);
-  }
+/* =========================
+   PORTE
+========================= */
 
-  100% {
-    transform: scale(1);
-  }
+.gate {
+    position: relative;
+
+    width: 430px;
+    height: 650px;
+
+    cursor: pointer;
+
+    transform-style: preserve-3d;
+
+    transition: transform 1s ease;
+}
+
+
+/* =========================
+   ARCHE
+========================= */
+
+.arch {
+    position: absolute;
+
+    width: 470px;
+    height: 690px;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border: 22px solid #24291f;
+
+    border-radius: 230px 230px 20px 20px;
+
+    box-shadow:
+        inset 0 0 25px #000,
+        0 0 15px rgba(160, 180, 120, 0.12);
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   SYMBOLE
+========================= */
+
+.symbol {
+    position: absolute;
+
+    top: 42px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    color: #777d65;
+
+    font-size: 38px;
+
+    text-shadow:
+        0 0 10px rgba(190, 210, 150, 0.3);
+}
+
+
+/* =========================
+   BATTANTS
+========================= */
+
+.doors {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 100%;
+    height: 570px;
+
+    display: flex;
+
+    transform-style: preserve-3d;
+}
+
+.door {
+    position: relative;
+
+    width: 50%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #11140f,
+            #272d21,
+            #171a14
+        );
+
+    border: 3px solid #343b2c;
+
+    overflow: hidden;
+
+    transform-style: preserve-3d;
+
+    transition:
+        transform 4s cubic-bezier(.4, 0, .15, 1),
+        filter 2s ease;
+}
+
+
+/* battant gauche */
+
+.door-left {
+    transform-origin: left center;
+
+    border-radius: 160px 0 0 0;
+}
+
+
+/* battant droit */
+
+.door-right {
+    transform-origin: right center;
+
+    border-radius: 0 160px 0 0;
+}
+
+
+/* =========================
+   ORNEMENTS
+========================= */
+
+.door::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 20px;
+
+    border: 2px solid #49513e;
+
+    opacity: 0.65;
+}
+
+.door::after {
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+    height: 280px;
+
+    top: 150px;
+    left: 50%;
+
+    transform: translateX(-50%) rotate(45deg);
+
+    border: 2px solid #454d3a;
+
+    opacity: 0.55;
+}
+
+.door-decoration {
+    position: absolute;
+
+    inset: 0;
+}
+
+.door-decoration span {
+    position: absolute;
+
+    left: 50%;
+
+    width: 8px;
+
+    background: #3d4435;
+
+    transform: translateX(-50%);
+}
+
+.door-decoration span:nth-child(1) {
+    height: 65%;
+    top: 18%;
+}
+
+.door-decoration span:nth-child(2) {
+    width: 120px;
+    height: 3px;
+
+    top: 42%;
+}
+
+.door-decoration span:nth-child(3) {
+    width: 90px;
+    height: 3px;
+
+    top: 65%;
+}
+
+
+/* =========================
+   LUMIÈRE DERRIÈRE
+========================= */
+
+.light {
+    position: absolute;
+
+    width: 200px;
+    height: 520px;
+
+    background: #dce8bc;
+
+    opacity: 0;
+
+    filter: blur(40px);
+
+    box-shadow:
+        0 0 100px #dce8bc,
+        0 0 250px rgba(210, 230, 170, 0.6);
+
+    transition: opacity 4s ease;
+}
+
+
+/* =========================
+   SOL
+========================= */
+
+.steps {
+    position: absolute;
+
+    width: 600px;
+    height: 150px;
+
+    left: 50%;
+    bottom: -120px;
+
+    transform:
+        translateX(-50%)
+        rotateX(70deg);
+
+    background:
+        linear-gradient(
+            #252920,
+            #080908
+        );
+
+    box-shadow:
+        0 0 40px #000;
+}
+
+
+/* =========================
+   OUVERTURE
+========================= */
+
+.gate.open .door-left {
+    transform: rotateY(-105deg);
+}
+
+.gate.open .door-right {
+    transform: rotateY(105deg);
+}
+
+body.open .light {
+    opacity: 1;
+}
+
+
+/* légère réaction avant ouverture */
+
+.gate:not(.open):hover {
+    transform: scale(1.015);
+}
+
+.gate:not(.open):hover .door {
+    filter: brightness(1.12);
 }
