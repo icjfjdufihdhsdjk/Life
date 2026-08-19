@@ -1,624 +1,882 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIFE</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ma Cinéthèque</title>
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+  <style>
+    :root {
+      --background: #0b0d12;
+      --card: #151922;
+      --card-hover: #1c2230;
+      --border: #252b37;
+      --text: #f4f4f5;
+      --muted: #9ca3af;
+      --accent: #7c5cff;
+      --accent-hover: #9278ff;
+      --danger: #ff5c6c;
+    }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 92, 255, 0.15), transparent 30%),
+        var(--background);
+      color: var(--text);
+    }
 
-svg {
-    width: 100vw;
-    height: 100vh;
-}
-</style>
+    header {
+      max-width: 1300px;
+      margin: auto;
+      padding: 40px 25px 20px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 1300px;
+      margin: auto;
+      padding: 20px 25px 60px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 13px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    .primary-button {
+      background: var(--accent);
+      color: white;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    .primary-button:hover {
+      background: var(--accent-hover);
+    }
+
+    .library {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 24px;
+    }
+
+    .empty-library {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--muted);
+      padding: 100px 20px;
+      border: 1px dashed var(--border);
+      border-radius: 18px;
+    }
+
+    .empty-library h2 {
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .media-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .media-card:hover {
+      transform: translateY(-5px);
+      background: var(--card-hover);
+    }
+
+    .poster {
+      aspect-ratio: 2 / 3;
+      background: #202532;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .poster-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      font-size: 48px;
+    }
+
+    .type-badge {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .rating {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 6px 9px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .card-content {
+      padding: 14px;
+    }
+
+    .card-title {
+      font-weight: bold;
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .card-info {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    dialog {
+      width: min(600px, calc(100% - 30px));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--card);
+      color: var(--text);
+      margin: auto;
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-button {
+      background: #242a36;
+      color: white;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+    }
+
+    form {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .secondary-button {
+      background: #252b37;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 10px;
+    }
+
+    .delete-button {
+      background: rgba(255, 92, 108, 0.12);
+      color: var(--danger);
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-right: auto;
+    }
+
+    @media (max-width: 700px) {
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-input {
+        grid-column: 1 / -1;
+      }
+
+      .add-button {
+        grid-column: 1 / -1;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<svg viewBox="0 0 1600 1000"
-     xmlns="http://www.w3.org/2000/svg">
-
-<defs>
-
-    <!-- PIERRE -->
-    <linearGradient id="stone" x1="0" x2="1">
-        <stop offset="0%" stop-color="#151713"/>
-        <stop offset="18%" stop-color="#36372f"/>
-        <stop offset="43%" stop-color="#20221d"/>
-        <stop offset="67%" stop-color="#414138"/>
-        <stop offset="100%" stop-color="#11130f"/>
-    </linearGradient>
-
-    <linearGradient id="stoneLight">
-        <stop offset="0%" stop-color="#373830"/>
-        <stop offset="50%" stop-color="#69675b"/>
-        <stop offset="100%" stop-color="#292b25"/>
-    </linearGradient>
-
-    <!-- OR -->
-    <linearGradient id="gold">
-        <stop offset="0%" stop-color="#50320b"/>
-        <stop offset="20%" stop-color="#9c6717"/>
-        <stop offset="48%" stop-color="#d1a33c"/>
-        <stop offset="70%" stop-color="#936016"/>
-        <stop offset="100%" stop-color="#392307"/>
-    </linearGradient>
-
-    <!-- TEXTURE DE PIERRE -->
-    <filter id="roughStone">
-
-        <feTurbulence
-            type="fractalNoise"
-            baseFrequency=".025"
-            numOctaves="4"
-            seed="8"
-            result="noise"/>
-
-        <feDiffuseLighting
-            in="noise"
-            lighting-color="#888579"
-            surfaceScale="4"
-            result="light">
-
-            <feDistantLight
-                azimuth="225"
-                elevation="38"/>
-
-        </feDiffuseLighting>
-
-        <feBlend
-            in="SourceGraphic"
-            in2="light"
-            mode="multiply"/>
-
-    </filter>
-
-
-    <!-- LUEUR PORTE -->
-    <filter id="goldGlow"
-            x="-100%"
-            y="-100%"
-            width="300%"
-            height="300%">
-
-        <feGaussianBlur
-            stdDeviation="18"
-            result="blur"/>
-
-        <feMerge>
-            <feMergeNode in="blur"/>
-            <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-
-    </filter>
-
-
-    <!-- OMBRE -->
-    <filter id="shadow"
-            x="-30%"
-            y="-30%"
-            width="160%"
-            height="160%">
-
-        <feDropShadow
-            dx="0"
-            dy="15"
-            stdDeviation="20"
-            flood-color="#000"
-            flood-opacity=".9"/>
-
-    </filter>
-
-</defs>
-
-
-<!-- ======================================================
-     NOIR
-====================================================== -->
-
-<rect width="1600"
-      height="1000"
-      fill="#000"/>
-
-
-<!-- ======================================================
-     LUEUR TRÈS FAIBLE
-====================================================== -->
-
-<ellipse
-    cx="800"
-    cy="820"
-    rx="430"
-    ry="160"
-    fill="#857347"
-    opacity=".06"
-    filter="url(#goldGlow)"/>
-
-
-<!-- ======================================================
-     MONUMENT
-====================================================== -->
-
-<g filter="url(#shadow)">
-
-
-<!-- MASSE CENTRALE -->
-
-<path
-    d="
-    M470 900
-    L470 470
-
-    Q470 410 515 385
-
-    L540 370
-    L540 320
-
-    L600 320
-    L620 275
-
-    L690 275
-
-    Q730 215 800 170
-
-    Q870 215 910 275
-
-    L980 275
-    L1000 320
-    L1060 320
-    L1060 370
-
-    L1085 385
-
-    Q1130 410 1130 470
-
-    L1130 900
-    Z
-    "
-    fill="url(#stone)"
-    stroke="#55564c"
-    stroke-width="5"
-    filter="url(#roughStone)"
-/>
-
-
-<!-- ======================================================
-     GRAND FRONTON
-====================================================== -->
-
-<path
-    d="
-    M520 420
-
-    L560 370
-
-    L630 350
-
-    L670 295
-
-    L730 285
-
-    L800 205
-
-    L870 285
-
-    L930 295
-
-    L970 350
-
-    L1040 370
-
-    L1080 420
-    Z
-    "
-    fill="#24251f"
-    stroke="#5d5c51"
-    stroke-width="5"
-/>
-
-
-<!-- lignes du fronton -->
-
-<path
-    d="
-    M590 370
-    L670 340
-    L710 300
-    L800 235
-    L890 300
-    L930 340
-    L1010 370
-    "
-    fill="none"
-    stroke="#777466"
-    stroke-width="4"
-    opacity=".65"
-/>
-
-
-<!-- ======================================================
-     GALERIE HAUTE
-====================================================== -->
-
-<path
-    d="
-    M445 430
-    L1155 430
-    L1125 485
-    L475 485
-    Z
-    "
-    fill="url(#stoneLight)"
-    stroke="#292a25"
-    stroke-width="5"
-/>
-
-<path
-    d="
-    M470 445
-    L1130 445
-    "
-    stroke="#858174"
-    stroke-width="4"
-    opacity=".5"
-/>
-
-
-<!-- ouvertures -->
-
-<g fill="#050605">
-
-    <path d="M535 445 L570 445 L565 478 L540 478 Z"/>
-    <path d="M595 445 L630 445 L625 478 L600 478 Z"/>
-    <path d="M655 445 L690 445 L685 478 L660 478 Z"/>
-
-    <path d="M910 445 L945 445 L940 478 L915 478 Z"/>
-    <path d="M970 445 L1005 445 L1000 478 L975 478 Z"/>
-    <path d="M1030 445 L1065 445 L1060 478 L1035 478 Z"/>
-
-</g>
-
-
-<!-- ======================================================
-     CORNICHE CENTRALE
-====================================================== -->
-
-<path
-    d="
-    M415 500
-    L1185 500
-
-    L1150 545
-    L450 545
-
-    Z
-    "
-    fill="url(#stoneLight)"
-    stroke="#272823"
-    stroke-width="6"
-/>
-
-<path
-    d="
-    M455 515
-    L1145 515
-    "
-    stroke="#777367"
-    stroke-width="4"
-    opacity=".55"
-/>
-
-
-<!-- ======================================================
-     AILE GAUCHE
-====================================================== -->
-
-<path
-    d="
-    M390 890
-    L410 560
-    L535 540
-    L550 890
-    Z
-    "
-    fill="url(#stone)"
-    stroke="#55564c"
-    stroke-width="5"
-/>
-
-
-<!-- ======================================================
-     AILE DROITE
-====================================================== -->
-
-<path
-    d="
-    M1050 890
-    L1065 540
-    L1190 560
-    L1210 890
-    Z
-    "
-    fill="url(#stone)"
-    stroke="#55564c"
-    stroke-width="5"
-/>
-
-
-<!-- ======================================================
-     CONTREFORT GAUCHE
-====================================================== -->
-
-<path
-    d="
-    M455 900
-    L475 580
-    L535 555
-    L555 900
-    Z
-    "
-    fill="url(#stoneLight)"
-    stroke="#242520"
-    stroke-width="5"
-/>
-
-
-<!-- ======================================================
-     CONTREFORT DROIT
-====================================================== -->
-
-<path
-    d="
-    M1045 900
-    L1065 555
-    L1125 580
-    L1145 900
-    Z
-    "
-    fill="url(#stoneLight)"
-    stroke="#242520"
-    stroke-width="5"
-/>
-
-
-<!-- ======================================================
-     CORNICHES LATÉRALES
-====================================================== -->
-
-<g fill="#55554b"
-   stroke="#242520"
-   stroke-width="4">
-
-    <path d="M385 610 L550 590 L555 625 L390 645 Z"/>
-    <path d="M380 720 L555 700 L558 735 L382 755 Z"/>
-    <path d="M375 820 L560 805 L562 840 L378 855 Z"/>
-
-    <path d="M1050 590 L1215 610 L1210 645 L1045 625 Z"/>
-    <path d="M1045 700 L1220 720 L1218 755 L1042 735 Z"/>
-    <path d="M1040 805 L1225 820 L1222 855 L1038 840 Z"/>
-
-</g>
-
-
-<!-- ======================================================
-     NICHES
-====================================================== -->
-
-<g fill="#050605"
-   stroke="#56564d"
-   stroke-width="4">
-
-    <path d="
-        M415 660
-        Q450 625 485 660
-        L485 715
-        L415 715
-        Z"/>
-
-    <path d="
-        M420 770
-        Q450 740 480 770
-        L480 815
-        L420 815
-        Z"/>
-
-
-    <path d="
-        M1115 660
-        Q1150 625 1185 660
-        L1185 715
-        L1115 715
-        Z"/>
-
-    <path d="
-        M1120 770
-        Q1150 740 1180 770
-        L1180 815
-        L1120 815
-        Z"/>
-
-</g>
-
-
-<!-- ======================================================
-     GRAND ENCADREMENT CENTRAL
-====================================================== -->
-
-<path
-    d="
-    M590 900
-
-    L590 620
-
-    Q590 560 635 535
-
-    L680 510
-
-    L920 510
-
-    L965 535
-
-    Q1010 560 1010 620
-
-    L1010 900
-
-    L930 900
-
-    L930 625
-
-    Q930 590 900 575
-
-    L700 575
-
-    Q670 590 670 625
-
-    L670 900
-
-    Z
-    "
-    fill="url(#stoneLight)"
-    stroke="#77766c"
-    stroke-width="6"
-/>
-
-
-<!-- profondeur intérieure -->
-
-<path
-    d="
-    M650 900
-
-    L650 625
-
-    Q650 570 700 550
-
-    L900 550
-
-    Q950 570 950 625
-
-    L950 900
-    Z
-    "
-    fill="#090a08"
-/>
-
-
-<!-- ======================================================
-     PORTE DORÉE
-====================================================== -->
-
-<g filter="url(#goldGlow)">
-
-    <path
-        d="
-        M690 900
-        L690 630
-
-        Q690 595 720 580
-
-        L795 580
-        L795 900
-        Z
-        "
-        fill="url(#gold)"
-        stroke="#a77927"
-        stroke-width="4"
+<header>
+  <h1>Ma Cinéthèque</h1>
+  <p>Ma bibliothèque personnelle de films et séries.</p>
+</header>
+
+<main>
+
+  <div class="toolbar">
+
+    <input
+      id="search"
+      class="search-input"
+      type="text"
+      placeholder="Rechercher..."
     />
 
-    <path
-        d="
-        M805 580
-        L880 580
+    <select id="typeFilter">
+      <option value="all">Tout</option>
+      <option value="Film">Films</option>
+      <option value="Série">Séries</option>
+    </select>
 
-        Q910 595 910 630
+    <select id="statusFilter">
+      <option value="all">Tous les statuts</option>
+      <option value="Vu">Vu</option>
+      <option value="En cours">En cours</option>
+      <option value="À revoir">À revoir</option>
+      <option value="Abandonné">Abandonné</option>
+    </select>
 
-        L910 900
-        L805 900
-        Z
-        "
-        fill="url(#gold)"
-        stroke="#a77927"
-        stroke-width="4"
-    />
+    <button
+      id="addButton"
+      class="primary-button add-button"
+    >
+      + Ajouter
+    </button>
 
-</g>
+  </div>
 
+  <section
+    id="library"
+    class="library"
+  ></section>
 
-<!-- ======================================================
-     RELIEFS DE LA PORTE
-====================================================== -->
+</main>
 
-<g
-    fill="none"
-    stroke="#d3a84c"
-    stroke-width="3"
-    opacity=".65">
+<dialog id="mediaDialog">
 
-    <path d="M710 620 L775 620 L775 855 L710 855 Z"/>
-    <path d="M825 620 L890 620 L890 855 L825 855 Z"/>
+  <div class="modal-header">
 
-    <path d="M720 650 L765 650"/>
-    <path d="M720 700 L765 700"/>
-    <path d="M720 750 L765 750"/>
-    <path d="M720 800 L765 800"/>
+    <h2 id="dialogTitle">
+      Ajouter
+    </h2>
 
-    <path d="M835 650 L880 650"/>
-    <path d="M835 700 L880 700"/>
-    <path d="M835 750 L880 750"/>
-    <path d="M835 800 L880 800"/>
+    <button
+      id="closeDialog"
+      class="close-button"
+    >
+      ✕
+    </button>
 
-</g>
+  </div>
 
+  <form id="mediaForm">
 
-<!-- joint -->
+    <div class="form-grid">
 
-<path
-    d="M800 580 L800 900"
-    stroke="#f0ca68"
-    stroke-width="4"
-    opacity=".65"
-/>
+      <div class="form-group full">
 
+        <label for="title">
+          Titre
+        </label>
 
-<!-- ======================================================
-     SOCLE
-====================================================== -->
+        <input
+          id="title"
+          required
+        />
 
-<path
-    d="
-    M330 900
-    L1270 900
-    L1330 1000
-    L270 1000
-    Z
-    "
-    fill="#10110e"
-    stroke="#33342e"
-    stroke-width="5"
-/>
+      </div>
 
-</g>
+      <div class="form-group">
 
-</svg>
+        <label for="type">
+          Type
+        </label>
+
+        <select id="type">
+          <option value="Film">Film</option>
+          <option value="Série">Série</option>
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="year">
+          Année
+        </label>
+
+        <input
+          id="year"
+          type="number"
+          min="1900"
+          max="2100"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="status">
+          Statut
+        </label>
+
+        <select id="status">
+          <option value="Vu">Vu</option>
+          <option value="En cours">En cours</option>
+          <option value="À revoir">À revoir</option>
+          <option value="Abandonné">Abandonné</option>
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="rating">
+          Note /10
+        </label>
+
+        <input
+          id="rating"
+          type="number"
+          min="0"
+          max="10"
+          step="0.5"
+        />
+
+      </div>
+
+      <div class="form-group full">
+
+        <label for="poster">
+          URL de l'affiche
+        </label>
+
+        <input
+          id="poster"
+          type="url"
+          placeholder="https://..."
+        />
+
+      </div>
+
+      <div class="form-group full">
+
+        <label for="review">
+          Mon avis
+        </label>
+
+        <textarea
+          id="review"
+          placeholder="Ton avis..."
+        ></textarea>
+
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+
+      <button
+        id="deleteButton"
+        type="button"
+        class="delete-button"
+        hidden
+      >
+        Supprimer
+      </button>
+
+      <button
+        id="cancelButton"
+        type="button"
+        class="secondary-button"
+      >
+        Annuler
+      </button>
+
+      <button
+        type="submit"
+        class="primary-button"
+      >
+        Enregistrer
+      </button>
+
+    </div>
+
+  </form>
+
+</dialog>
+
+<script>
+
+const STORAGE_KEY = "myMovieLibrary";
+
+let library =
+  JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+let editingId = null;
+
+const libraryElement =
+  document.getElementById("library");
+
+const searchInput =
+  document.getElementById("search");
+
+const typeFilter =
+  document.getElementById("typeFilter");
+
+const statusFilter =
+  document.getElementById("statusFilter");
+
+const dialog =
+  document.getElementById("mediaDialog");
+
+const form =
+  document.getElementById("mediaForm");
+
+const deleteButton =
+  document.getElementById("deleteButton");
+
+function saveLibrary() {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(library)
+  );
+
+}
+
+function renderLibrary() {
+
+  const search =
+    searchInput.value.toLowerCase();
+
+  const type =
+    typeFilter.value;
+
+  const status =
+    statusFilter.value;
+
+  const filteredLibrary =
+    library.filter(item => {
+
+      const matchTitle =
+        item.title
+          .toLowerCase()
+          .includes(search);
+
+      const matchType =
+        type === "all" ||
+        item.type === type;
+
+      const matchStatus =
+        status === "all" ||
+        item.status === status;
+
+      return (
+        matchTitle &&
+        matchType &&
+        matchStatus
+      );
+
+    });
+
+  libraryElement.innerHTML = "";
+
+  if (filteredLibrary.length === 0) {
+
+    libraryElement.innerHTML = `
+      <div class="empty-library">
+
+        <h2>Ta bibliothèque est vide</h2>
+
+        <p>
+          Ajoute ton premier film ou ta première série.
+        </p>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  filteredLibrary.forEach(item => {
+
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "media-card";
+
+    card.innerHTML = `
+
+      <div class="poster">
+
+        ${
+          item.poster
+          ? `
+            <img
+              src="${item.poster}"
+              alt="${item.title}"
+            />
+          `
+          : `
+            <div class="poster-placeholder">
+              🎬
+            </div>
+          `
+        }
+
+        <span class="type-badge">
+          ${item.type}
+        </span>
+
+        <span class="rating">
+          ★ ${item.rating || "-"} / 10
+        </span>
+
+      </div>
+
+      <div class="card-content">
+
+        <div class="card-title">
+          ${item.title}
+        </div>
+
+        <div class="card-info">
+
+          <span>
+            ${item.year || "Année inconnue"}
+          </span>
+
+          <span>•</span>
+
+          <span>
+            ${item.status}
+          </span>
+
+        </div>
+
+      </div>
+    `;
+
+    card.addEventListener(
+      "click",
+      () => openEditDialog(item.id)
+    );
+
+    libraryElement.appendChild(card);
+
+  });
+
+}
+
+function openAddDialog() {
+
+  editingId = null;
+
+  form.reset();
+
+  document.getElementById(
+    "dialogTitle"
+  ).textContent =
+    "Ajouter un film ou une série";
+
+  deleteButton.hidden = true;
+
+  dialog.showModal();
+
+}
+
+function openEditDialog(id) {
+
+  const item =
+    library.find(
+      item => item.id === id
+    );
+
+  if (!item) return;
+
+  editingId = id;
+
+  document.getElementById(
+    "dialogTitle"
+  ).textContent =
+    "Modifier";
+
+  document.getElementById(
+    "title"
+  ).value =
+    item.title;
+
+  document.getElementById(
+    "type"
+  ).value =
+    item.type;
+
+  document.getElementById(
+    "year"
+  ).value =
+    item.year;
+
+  document.getElementById(
+    "status"
+  ).value =
+    item.status;
+
+  document.getElementById(
+    "rating"
+  ).value =
+    item.rating;
+
+  document.getElementById(
+    "poster"
+  ).value =
+    item.poster;
+
+  document.getElementById(
+    "review"
+  ).value =
+    item.review;
+
+  deleteButton.hidden = false;
+
+  dialog.showModal();
+
+}
+
+form.addEventListener(
+  "submit",
+  event => {
+
+    event.preventDefault();
+
+    const item = {
+
+      id:
+        editingId ||
+        crypto.randomUUID(),
+
+      title:
+        document
+          .getElementById("title")
+          .value
+          .trim(),
+
+      type:
+        document
+          .getElementById("type")
+          .value,
+
+      year:
+        document
+          .getElementById("year")
+          .value,
+
+      status:
+        document
+          .getElementById("status")
+          .value,
+
+      rating:
+        document
+          .getElementById("rating")
+          .value,
+
+      poster:
+        document
+          .getElementById("poster")
+          .value
+          .trim(),
+
+      review:
+        document
+          .getElementById("review")
+          .value
+          .trim()
+
+    };
+
+    if (editingId) {
+
+      library =
+        library.map(oldItem =>
+          oldItem.id === editingId
+            ? item
+            : oldItem
+        );
+
+    } else {
+
+      library.unshift(item);
+
+    }
+
+    saveLibrary();
+
+    dialog.close();
+
+    renderLibrary();
+
+  }
+);
+
+deleteButton.addEventListener(
+  "click",
+  () => {
+
+    library =
+      library.filter(
+        item =>
+          item.id !== editingId
+      );
+
+    saveLibrary();
+
+    dialog.close();
+
+    renderLibrary();
+
+  }
+);
+
+document
+  .getElementById("addButton")
+  .addEventListener(
+    "click",
+    openAddDialog
+  );
+
+document
+  .getElementById("closeDialog")
+  .addEventListener(
+    "click",
+    () => dialog.close()
+  );
+
+document
+  .getElementById("cancelButton")
+  .addEventListener(
+    "click",
+    () => dialog.close()
+  );
+
+searchInput.addEventListener(
+  "input",
+  renderLibrary
+);
+
+typeFilter.addEventListener(
+  "change",
+  renderLibrary
+);
+
+statusFilter.addEventListener(
+  "change",
+  renderLibrary
+);
+
+renderLibrary();
+
+</script>
 
 </body>
 </html>
